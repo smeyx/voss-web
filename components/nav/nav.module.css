@@ -1,0 +1,29 @@
+.navlink {
+    border: none;
+    background: none;
+    position: relative;
+    transition: all ease-in 200ms;
+}
+
+.navlink::after {
+    height: 10%;
+    bottom: 0;
+    left: 0;
+    width: 0;
+}
+
+.navlink::before, .navlink::after {
+    transition: all ease-in 200ms;
+    background: #7c3aed;
+    content: '';
+    position: absolute;
+    z-index: 1;
+}
+
+.navlink:hover {
+    cursor: pointer;
+}
+
+.navlink:hover::after {
+    width: 100%;
+}
