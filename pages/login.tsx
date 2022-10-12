@@ -7,16 +7,15 @@ const Login:NextPage = () => {
     event.preventDefault();
 
     try { 
-      const username = event.currentTarget.username.value;
+      const email = event.currentTarget.email.value;
       const password = event.currentTarget.password.value;
 
       const data = await fetchJSON('/api/login', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ username, password }) 
+        body: JSON.stringify({ email, password }) 
       });
 
-      console.log(data)
     } catch(e) {
       console.error(e);
     }

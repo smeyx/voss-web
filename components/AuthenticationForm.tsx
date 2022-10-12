@@ -9,7 +9,7 @@ export interface AuthenticationFormProps {
 }
 
 export default function AuthenticationForm({ onSubmit, children, errorResponse }: AuthenticationFormProps): ReactElement | null {
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const { pathname } = useRouter();
@@ -18,15 +18,15 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse }
     setPassword(event.currentTarget.value);
   }
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.currentTarget.value);
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.currentTarget.value);
   }
 
   return (
       <div className="flex flex-row items-center max-w-lg p-6 mx-auto mt-20 bg-white border border-gray-200 shadow-lg rounded-xl">
         <form className="flex flex-col flex-1 gap-2" onSubmit={ onSubmit }>
-        <label className="font-bold" htmlFor="username">Username</label>
-          <input type="text" placeholder="Username" id="username" required value={ username } onChange={ handleUsernameChange } className="p-2 mb-4 border border-gray-300 rounded active:border-purple-600"/>
+        <label className="font-bold" htmlFor="email">E-Mail</label>
+          <input type="email" placeholder="E-Mail" id="email" required value={ email } onChange={ handleEmailChange } className="p-2 mb-4 border border-gray-300 rounded active:border-purple-600"/>
         <label className="font-bold" htmlFor="password">Password</label>
           <input type="password" placeholder="Password" id="password" required value={ password } onChange={ handlePasswordChange } className="p-2 mb-6 border border-gray-300 rounded active:border-purple-600"/>
           <div className="flex items-center">

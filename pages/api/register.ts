@@ -13,19 +13,14 @@ export type RegistrationResponse = {
 };
 
 async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
-  const { username, password } = await req.body;
-  const passwordHash = createHmac('sha256', process.env.COOKIE_PW as string).update(password).digest('hex');
-  const saltRounds = 12;
-
-  const hash = await bcrypt.hash(passwordHash, saltRounds);
+  const { email, password } = await req.body;
   const users = new UserModel();
 
   try {
     let status: RegistrationResponse;
-    const resp = await users.insert(username, hash);
+    const resp = await users.register(email, password);
     if(resp) {
       status = { error: false, code: 'success' };
-      res.status(200).send({ error: false, code: 'success' });
     } else {
       status = { error: true, code: 'database_error' };
     }
