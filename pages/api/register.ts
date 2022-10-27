@@ -24,7 +24,8 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
     }
 
     res.status(200).send(status);
-  } catch(EmailTakenError) {
+  } catch(err) {
+    console.log(err);
     res.status(200).send({ error: true, code: 'email_is_taken', message: 'This email is already taken' });
   }
 };

@@ -3,11 +3,17 @@ import AuthenticationForm from '@components/AuthenticationForm';
 import { useRouter } from 'next/router';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
+import { useState } from 'react';
 import useUser from '@lib/useUser';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import type { User } from '@models/user/user.types';
 
+export type extraProps = {
+  errorResponse?: string,
+}
+
 const Login:NextPage = () => {
+  const [extraProps, setExtraProps] = useState<extraProps>();
   const router = useRouter();
   const { mutateUser } = useUser();
 
@@ -24,7 +30,11 @@ const Login:NextPage = () => {
         body: JSON.stringify({ email, password }) 
       });
 
-      if(data) {
+      if(data && data.login === false) {
+        setExtraProps({ errorResponse: 'Login failed.' });
+      }
+
+      if(data && data.isLoggedIn === true) {
         mutateUser(data);
         router.push('/dashboard');
       }
@@ -36,7 +46,7 @@ const Login:NextPage = () => {
 
   return (
     <div className="container mx-auto text-gray-800">
-        <AuthenticationForm onSubmit={ handleSubmitLogin }>Login</AuthenticationForm>
+        <AuthenticationForm onSubmit={ handleSubmitLogin } { ...extraProps }>Login</AuthenticationForm>
     </div>
   );
 }
