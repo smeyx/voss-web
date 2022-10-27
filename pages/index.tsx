@@ -1,35 +1,47 @@
 import type { NextPage, NextApiRequest, GetServerSideProps } from 'next'
-import type { User } from '@models/user/user.types';
 import Head from 'next/head'
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
-import useUser from '@lib/useUser';
 
 interface PageProps {
-  text: string;
+  isLoggedIn: boolean;
 }
 
-const Home: NextPage<PageProps> = ({ text }) => {
-  const user: User | undefined = useUser('/login');
+const Home: NextPage<PageProps> = ({ isLoggedIn }) => {
   return (
     <>
       <Head>
-        <title>VOSSS - Your friendly invoice companion</title>
+        <title>VOSS - Your friendly invoice companion</title>
       </Head>
-      email: { user ? user.email : '' }
+      <div className="container flex justify-center mx-auto text-xl">
+        <p>
+          { isLoggedIn && 
+            'You are currently logged in'
+          }
+        </p>
+      </div>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
-  async ({ req: NextApiRequest }) => {
+  async function ({ req, res }) {
+    const user = req.session.user;
+
+    if(user === undefined) {
+      res.setHeader('location', '/login');
+      res.statusCode = 302;
+      res.end();
+    }
+
+
     return {
       props: {
-        text: 'nice text',
+        isLoggedIn: req.session.user?.isLoggedIn ? true : false,
       },
     }
   }, 
   sessionParameters
 );
 
-export default Home
+export default Home;

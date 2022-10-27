@@ -1,8 +1,6 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
-import { createHmac } from 'crypto';
 import { UserModel } from '@models/user/user';
-import bcrypt from 'bcrypt';
 
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 

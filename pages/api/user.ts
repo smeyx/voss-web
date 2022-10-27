@@ -4,15 +4,16 @@ import { sessionParameters } from '@lib/session';
 import { UserModel } from '@models/user/user'; 
 import type { User } from '@models/user/user.types';
 
-async function userRoute(req: NextApiRequest, res: NextApiResponse<{ email: string, id: number } | false>) {
-  if(req.session && req.session.id) {
+async function userRoute(req: NextApiRequest, res: NextApiResponse<User | false>) {
+  if(req.session && req.session.user?.id) {
     const users = new UserModel();
-    const user: { email: string, id: number } = await users.findById(req.session.id);
+    const user: User = await users.findById(req.session.user.id);
+    user.isLoggedIn = true;
 
-    res.status(200).json(user);
+    res.json(user);
+  } else {
+    res.status(200).json(false);
   }
-
-  res.status(200).json(false);
 };
 
 export default withIronSessionApiRoute(userRoute, sessionParameters);

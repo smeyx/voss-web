@@ -30,22 +30,26 @@ export class UserModel {
     return user;
   }
 
-  async login(email: string, password: string): Promise<boolean> {
-    const isRegistered = await this.findByEmail(email);
-    if(!isRegistered) {
-      console.log('error');
-      throw new Error();
-    }
-
+  async login(email: string, password: string): Promise<{ id: number, email: string }> {
     const res = await knex('users')
-      .select('password')
+      .select('id', 'email', 'password')
       .where('email', email)
       .first();
+
+    if(!res) {
+      console.log('user not found.');
+      throw new Error();
+    }
     
     const preHash = createHmac('sha256', process.env.COOKIE_PW as string).update(password).digest('hex');
     const login = await bcrypt.compare(preHash, res.password);
 
-    return login;
+    if(!login) {
+      console.log('password did not match.');
+      throw new Error();
+    }
+
+    return { id: res.id, email: res.email };
   }
 
   async register(email: string, password: string): Promise<boolean> {

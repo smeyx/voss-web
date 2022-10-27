@@ -8,7 +8,10 @@ export const sessionParameters = {
 
 declare module 'iron-session' {
   interface IronSessionData {
-    email?: string;
-    id?: number;
+    user?: {
+      email: string;
+      id: number;
+      isLoggedIn?: boolean;
+    }
   }
 }
