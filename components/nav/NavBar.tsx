@@ -19,10 +19,8 @@ type AuthButtonProps = {
 const AuthButton: React.FC<AuthButtonProps> = ({ clickAction, authLink = '', children }): JSX.Element => {
   return (
     <Link href={ authLink } passHref>
-      <button onClick= { clickAction } className="p-2 px-4 text-white bg-purple-600 rounded transition-colors hover:bg-purple-800">
-        <a className={ `font-medium uppercase` }>
+      <button onClick= { clickAction } className="p-2 px-4 text-white uppercase bg-purple-600 rounded transition-colors hover:bg-purple-800">
           { children }
-        </a>
       </button>
     </Link>
   )
@@ -47,9 +45,9 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
   return ( 
     <nav className="sticky top-0 flex flex-row justify-between mx-auto ml-20 md:py-6 md:mb-6 md:items-center">
         <Link href="/">
-          <a className="font-medium uppercase transition-colors text-grey-900 hover:text-purple-600">
+          <span className="font-medium uppercase transition-colors text-grey-900 hover:text-purple-600">
             VOSSS
-          </a>
+          </span>
         </Link>
         <div className="mr-32 font-medium text-gray-800">
           { authButton }

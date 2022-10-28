@@ -29,9 +29,11 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse }
           <input type="email" placeholder="E-Mail" id="email" required value={ email } onChange={ handleEmailChange } className="p-2 mb-4 border border-gray-300 rounded active:border-purple-600"/>
         <label className="font-bold" htmlFor="password">Password</label>
           <input type="password" placeholder="Password" id="password" required value={ password } onChange={ handlePasswordChange } className="p-2 mb-6 border border-gray-300 rounded active:border-purple-600"/>
-          <div className="flex items-center">
-          <button className="flex-1 p-3 text-white bg-purple-600 border-2 border-purple-600 rounded hover:border-purple-800 hover:bg-purple-800 transition-colors" type="submit">{ children || 'Login' }</button>
-            <Link href={ pathname === '/login' ? '/register' : '/login' }><button className="flex-1 p-3 font-bold text-purple-600 bg-transparent hover:text-purple-900">{ pathname === '/login' ? 'Register' : 'Sign in' }</button></Link>
+          <div className="flex justify-center">
+          <button className="flex-1 p-2 text-white bg-purple-600 border-2 border-purple-600 rounded hover:border-purple-800 hover:bg-purple-800 transition-colors" type="submit">{ children || 'Login' }</button>
+            <Link className="flex-1 text-center" href={ pathname === '/login' ? '/register' : '/login' }>
+              <button className="p-3 font-bold text-purple-600 bg-transparent hover:text-purple-900">{ pathname === '/login' ? 'Register' : 'Sign in' }</button>
+            </Link>
             </div>
           <p className="text-red-800">{ errorResponse && errorResponse }</p>
       </form>
