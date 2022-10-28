@@ -54,7 +54,7 @@ export class UserModel {
 
   async register(email: string, password: string): Promise<boolean> {
     const already = await this.findByEmail(email);
-    if(already) { 
+    if(already === true) { 
       throw new EmailTakenError('Email is already taken');
     }
 
