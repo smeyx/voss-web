@@ -9,6 +9,12 @@ class EmailTakenError extends Error {
   }
 }
 
+type UserModelResponse = {
+  success: boolean,
+  errorCode?: boolean,
+  errorMessage?: string,
+}
+
 export class UserModel {
   async findByEmail(newEmail: string): Promise<boolean> {
     const res = await knex('users')
@@ -52,10 +58,15 @@ export class UserModel {
     return { id: res.id, email: res.email };
   }
 
-  async register(email: string, password: string): Promise<boolean> {
+  // should throw an error (Promise<boolean>)
+  async register(email: string, password: string): Promise<UserModelResponse> {
     const already = await this.findByEmail(email);
     if(already === true) { 
-      throw new EmailTakenError('Email is already taken');
+      return { 
+        success: false,
+        errorCode: 'email_taken',
+        errorMessage: 'Email is already taken' 
+      };
     }
 
     const preHash = createHmac('sha256', process.env.COOKIE_PW as string).update(password).digest('hex');
@@ -67,9 +78,15 @@ export class UserModel {
       .returning('id');
 
     if(res.id) {
-      return true;
+      return { 
+        success: true
+      };
     }
 
-    return false;
+    return { 
+      success: false, 
+      errorCode: 'database_error',
+      errorMessage: 'Database error' 
+    };
   }
 }

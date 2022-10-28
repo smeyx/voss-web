@@ -5,8 +5,8 @@ import { UserModel } from '@models/user/user';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 export type RegistrationResponse = {
-  error: boolean,
-  code: string,
+  success: boolean,
+  code?: string,
   message?: string,
 };
 
@@ -17,16 +17,16 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
   try {
     let status: RegistrationResponse;
     const resp = await users.register(email, password);
-    if(resp) {
-      status = { error: false, code: 'success' };
+    console.log(resp);
+    if(resp && resp.success === true) {
+      status = { success: true };
     } else {
-      status = { error: true, code: 'database_error' };
+      status = { success: false, code: resp.errorCode, message: resp.errorMessage };
     }
 
     res.status(200).send(status);
   } catch(err) {
-    console.log(err);
-    res.status(200).send({ error: true, code: 'email_is_taken', message: 'This email is already taken' });
+    res.status(200).send({ success: false, code: 'error_registration', message: 'Error whilst registering user.' });
   }
 };
 

@@ -19,13 +19,13 @@ const Register:NextPage = () => {
     try { 
       const email = event.currentTarget.email.value;
       const password = event.currentTarget.password.value
-      const { error, code, message } = await fetchJSON<RegistrationResponse>('/api/register', {
+      const { success, code, message } = await fetchJSON<RegistrationResponse>('/api/register', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ email, password }) 
       });
       
-      if(error === true) {
+      if(success === false) {
         if(message) {
           setExtraProps({ errorResponse: message});
         }
