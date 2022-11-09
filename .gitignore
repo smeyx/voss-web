@@ -4,6 +4,7 @@
 /db/dev.sqlite3
 /node_modules
 /.pnp
+/logo/*
 .pnp.js
 
 # testing
