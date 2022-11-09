@@ -23,16 +23,16 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse }
   }
 
   return (
-      <div className="flex flex-row items-center max-w-lg p-6 mx-auto mt-20 bg-white border border-gray-200 shadow-lg rounded-xl">
+      <div className="flex flex-row items-center max-w-lg p-6 mx-auto mt-20 bg-white border border-gray-100 shadow-lg rounded-xl">
         <form className="flex flex-col flex-1 gap-2" onSubmit={ onSubmit }>
         <label className="font-bold" htmlFor="email">E-Mail</label>
-          <input type="email" placeholder="E-Mail" id="email" required value={ email } onChange={ handleEmailChange } className="p-2 mb-4 border border-gray-300 rounded active:border-purple-600"/>
+          <input type="email" placeholder="E-Mail" id="email" required value={ email } onChange={ handleEmailChange } className="p-2 mb-4 border border-gray-100 rounded focus:outline outline-1 outline-primary-500"/>
         <label className="font-bold" htmlFor="password">Password</label>
-          <input type="password" placeholder="Password" id="password" required value={ password } onChange={ handlePasswordChange } className="p-2 mb-6 border border-gray-300 rounded active:border-purple-600"/>
+          <input type="password" placeholder="Password" id="password" required value={ password } onChange={ handlePasswordChange } className="p-2 mb-6 border border-gray-100 rounded focus:outline outline-1 outline-primary-500" />
           <div className="flex justify-center">
-          <button className="flex-grow p-2 text-white bg-purple-600 border-2 border-purple-600 rounded hover:border-purple-800 hover:bg-purple-800 transition-colors" type="submit">{ children || 'Login' }</button>
-            <Link href={ pathname === '/login' ? '/register' : '/login' }>
-              <button className="w-5/12 p-2 font-bold text-purple-600 bg-transparent hover:text-purple-900">{ pathname === '/login' ? 'Register' : 'Sign in' }</button>
+          <button className="flex-1 p-2 text-white border-2 rounded bg-primary-500 border-primary-500 hover:border-primary-600 hover:bg-primary-600 transition-colors" type="submit">{ children || 'Login' }</button>
+            <Link className="flex-1 w-5/12 text-center hover:text-primary-900" href={ pathname === '/login' ? '/register' : '/login' }>
+              <button className="w-full h-full p-2 font-bold bg-transparent text-primary-500 hover:text-primary-600">{ pathname === '/login' ? 'Register' : 'Sign in' }</button>
             </Link>
             </div>
           <p className="text-red-800">{ errorResponse && errorResponse }</p>

@@ -1,15 +1,16 @@
 import type { NextPage, GetServerSideProps } from 'next/types';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
+import Dashboard from '@components/Dashboard/';
 import type { User } from '@models/user/user.types';
 
 interface PageProps {
-  user: User | false,
+  user: User,
 }
 
-const Dashboard: NextPage<PageProps> = ({ user }) => {
+const DashboardPage: NextPage<PageProps> = ({ user }) => {
   return (
-    <>{ user && user.email}</>
+    <Dashboard user={ user }></Dashboard>
   );
 }
 
@@ -23,11 +24,11 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
 
     return {
       props: {
-        user: req.session.user ? req.session.user : false,
+        user: req.session.user,
       }
     }
   },
   sessionParameters
 );
 
-export default Dashboard;
+export default DashboardPage;

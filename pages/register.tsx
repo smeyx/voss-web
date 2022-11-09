@@ -9,7 +9,7 @@ export type extraProps = {
   errorResponse?: string,
 }
 
-const Register:NextPage = () => {
+const RegisterPage:NextPage = () => {
   const [extraProps, setExtraProps] = useState<extraProps>();
   const router = useRouter();
 
@@ -46,4 +46,4 @@ const Register:NextPage = () => {
   );
 }
 
-export default Register;
+export default RegisterPage;

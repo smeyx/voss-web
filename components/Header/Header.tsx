@@ -1,10 +1,16 @@
 import NavBar from '@components/nav/NavBar';
-import useUser from '@lib/useUser';
+import type { User } from '@models/user/user.types';
+import type { KeyedMutator } from 'swr';
 
-export default function Header(): JSX.Element {
-  const { user, mutateUser } = useUser();
+type HeaderProps = {
+  isLoggedIn: boolean,
+  mutate: KeyedMutator<User>
+};
 
+const Header: React.FC<HeaderProps> = ({ isLoggedIn, mutate }): JSX.Element => {
   return ( 
-    <NavBar isLoggedIn={ user && user.isLoggedIn ? true : false } mutate={ mutateUser } />
+    <NavBar isLoggedIn={ isLoggedIn } mutate={ mutate } />
   );
 }
+
+export default Header;

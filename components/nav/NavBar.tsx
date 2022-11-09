@@ -1,5 +1,7 @@
 import fetchJSON from '@lib/fetchJSON';
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '@images/logo_wide.svg';
 import { useRouter } from 'next/router';
 import type { KeyedMutator } from 'swr';
 import type { User } from '@models/user/user.types';
@@ -19,7 +21,7 @@ type AuthButtonProps = {
 const AuthButton: React.FC<AuthButtonProps> = ({ clickAction, authLink = '', children }): JSX.Element => {
   return (
     <Link href={ authLink } passHref>
-      <button onClick= { clickAction } className="p-2 px-4 text-white uppercase bg-purple-600 rounded transition-colors hover:bg-purple-800">
+      <button onClick={ clickAction } className="p-2 px-4 text-white uppercase rounded bg-primary-500 transition-colors hover:bg-primary-600">
           { children }
       </button>
     </Link>
@@ -43,15 +45,13 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
     : <AuthButton children={ "Login" } authLink="/login"/>
 
   return ( 
-    <nav className="sticky top-0 flex flex-row justify-between mx-auto ml-20 md:py-6 md:mb-6 md:items-center">
+    <nav className="sticky top-0 flex flex-row items-center justify-between py-4 mx-auto ml-5">
         <Link href="/">
-          <span className="font-medium uppercase transition-colors text-grey-900 hover:text-purple-600">
-            VOSSS
-          </span>
+          <Logo style={{ fill: 'none' }} height="30"/>
         </Link>
-        <div className="mr-32 font-medium text-gray-800">
-          { authButton }
-        </div>
+      <div className="mr-5 font-medium text-gray-800">
+        { authButton }
+      </div>
     </nav> 
   );
 };

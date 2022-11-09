@@ -1,4 +1,4 @@
-import type { NextPage, NextApiRequest, GetServerSideProps } from 'next'
+import type { NextPage, GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
@@ -36,9 +36,10 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
 
 
     return {
-      props: {
-        isLoggedIn: req.session.user?.isLoggedIn ? true : false,
-      },
+      redirect: {
+        permanent: false,
+        destination: '/dashboard',
+      }
     }
   }, 
   sessionParameters

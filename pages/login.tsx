@@ -12,7 +12,12 @@ export type extraProps = {
   errorResponse?: string,
 }
 
-const Login:NextPage = () => {
+type LoginResponse = {
+  success: boolean,
+  user?: User
+}
+
+const LoginPage:NextPage = () => {
   const [extraProps, setExtraProps] = useState<extraProps>();
   const router = useRouter();
   const { mutateUser } = useUser();
@@ -24,18 +29,18 @@ const Login:NextPage = () => {
       const email = event.currentTarget.email.value;
       const password = event.currentTarget.password.value;
 
-      const data: User = await fetchJSON('/api/login', {
+      const response: LoginResponse = await fetchJSON('/api/login', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ email, password }) 
       });
 
-      if(data && data.login === false) {
+      if(response && response.success === false) {
         setExtraProps({ errorResponse: 'Login failed.' });
       }
 
-      if(data && data.isLoggedIn === true) {
-        mutateUser(data);
+      if(response && response.success === true) {
+        mutateUser(response.user);
         router.push('/dashboard');
       }
 
@@ -70,4 +75,4 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   sessionParameters
 );
 
-export default Login;
+export default LoginPage;

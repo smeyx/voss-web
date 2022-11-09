@@ -15,12 +15,12 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       await req.session.save();
 
       user = req.session.user;
-      res.status(200).json({ user });
+      res.status(200).json({ success: true, user });
     }
 
   } catch(e) {
     console.log(e);
-    res.status(200).json({ login: false });
+    res.status(200).json({ success: false });
   }
 }
 
