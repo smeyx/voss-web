@@ -1,7 +1,7 @@
 import fetchJSON from '@lib/fetchJSON';
 import Link from 'next/link';
 import Image from 'next/image';
-import Logo from '@images/logo_wide.svg';
+import Logo from '@images/logo_wide2.svg';
 import { useRouter } from 'next/router';
 import type { KeyedMutator } from 'swr';
 import type { User } from '@models/user/user.types';
@@ -21,7 +21,7 @@ type AuthButtonProps = {
 const AuthButton: React.FC<AuthButtonProps> = ({ clickAction, authLink = '', children }): JSX.Element => {
   return (
     <Link href={ authLink } passHref>
-      <button onClick={ clickAction } className="p-2 px-4 text-white uppercase rounded bg-primary-500 transition-colors hover:bg-primary-600">
+      <button onClick={ clickAction } className="p-2 px-4 text-white uppercase rounded bg-primary-500 transition-colors hover:bg-primary-600 dark:bg-secondary-500 dark:hover:bg-secondary-600 dark:text-neutral-800">
           { children }
       </button>
     </Link>
@@ -41,15 +41,15 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
   };
 
   const authButton = isLoggedIn 
-    ? <AuthButton authLink="/api/logout" clickAction={ logoutAction } children={ "Logout" }/>
-    : <AuthButton children={ "Login" } authLink="/login"/>
+    ? <AuthButton authLink="/api/logout" clickAction={ logoutAction }>Logout</AuthButton>
+    : <AuthButton authLink="/login">Login</AuthButton>
 
   return ( 
-    <nav className="sticky top-0 flex flex-row items-center justify-between py-4 mx-auto ml-5">
-        <Link href="/">
-          <Logo style={{ fill: 'none' }} height="30"/>
-        </Link>
-      <div className="mr-5 font-medium text-gray-800">
+    <nav className="sticky top-0 flex flex-row items-center justify-between py-4 mx-auto">
+      <Link href="/" className="text-primary-500 dark:text-secondary-500">
+        <Logo height="30" style={{ color: 'inherit' }} />
+      </Link>
+      <div className="font-medium text-gray-800">
         { authButton }
       </div>
     </nav> 

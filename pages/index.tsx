@@ -10,16 +10,6 @@ interface PageProps {
 const Home: NextPage<PageProps> = ({ isLoggedIn }) => {
   return (
     <>
-      <Head>
-        <title>VOSS - Your friendly invoice companion</title>
-      </Head>
-      <div className="container flex justify-center mx-auto text-xl">
-        <p>
-          { isLoggedIn && 
-            'You are currently logged in'
-          }
-        </p>
-      </div>
     </>
   );
 }
@@ -38,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
     return {
       redirect: {
         permanent: false,
-        destination: '/dashboard',
+        destination: '/dashboard/overview',
       }
     }
   }, 

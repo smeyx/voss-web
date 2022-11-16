@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+    color="#fff"
+   viewBox="0 0 39 7.9363953"
+   version="1.1"
+   id="svg878"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="logo_new2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview880"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="5.7487057"
+     inkscape:cx="58.708867"
+     inkscape:cy="-22.787738"
+     inkscape:window-width="1920"
+     inkscape:window-height="1021"
+     inkscape:window-x="0"
+     inkscape:window-y="1080"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs875">
+    <rect
+       x="135.27736"
+       y="24.992273"
+       width="145.20975"
+       height="61.173183"
+       id="rect1125" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-160.13045,-90.434769)">
+    <text
+       xml:space="preserve"
+       transform="matrix(0.20214905,0,0,0.20214905,142.22507,83.39551)"
+       id="text1123"
+       style="color:currentColor;font-style:normal;font-weight:normal;font-size:53.3333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1125);display:inline;fill:currentColor;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.999893;stroke-dasharray:none;image-rendering:auto"><tspan
+         x="135.27734"
+         y="73.518835"
+         id="tspan1143">VOSS</tspan></text>
+    <path
+       d="m 169.33038,93.93716 -1.38167,-3.298478 c -0.0167,-0.04023 -0.0508,-0.07018 -0.092,-0.08134 -0.0412,-0.01107 -0.0851,-0.0021 -0.11907,0.02447 l -2.83869,2.216299 -2.83869,-2.216301 c -0.034,-0.02633 -0.0779,-0.03549 -0.11907,-0.02447 -0.0412,0.01108 -0.0753,0.04103 -0.092,0.08127 l -1.38167,3.298478 c -0.0231,0.05507 -0.01,0.119074 0.0328,0.159925 l 4.30423,4.118062 c 0.0267,0.0255 0.0605,0.03817 0.0944,0.03817 0,0 0,0 0,0 0.034,0 0.0679,-0.01262 0.0944,-0.03817 l 4.30424,-4.118062 c 0.0427,-0.04087 0.0557,-0.104856 0.0328,-0.159925 z m -4.48929,2.216124 c 2.9e-4,1.18e-4 0.0271,0.01288 0.0579,0.01288 0.0309,0 0.0497,-0.0095 0.0543,-0.01185 8.4e-4,-4.39e-4 0.40511,-0.190886 0.40511,-0.190886 l -0.45955,1.634856 -0.45949,-1.634905 z m 0.0579,-0.285339 -0.56085,-0.26465 -0.61901,-2.202382 1.17986,-0.278657 1.17991,0.278696 -0.61902,2.20232 z m -3.90796,-2.113999 0.66297,-0.755669 -0.0487,0.610541 z m 0.96389,-1.045094 0.95528,-0.196062 0.4159,0.689503 -1.43765,0.33965 z m 0.0231,-0.294536 0.10177,-1.277712 0.67463,1.118369 z m 1.31297,0.190447 1.08151,0.350258 -0.76177,0.179887 z m 2.13384,0.350258 1.08145,-0.350258 -0.3198,0.530155 z m 1.46258,-0.442254 0.95529,0.196061 0.0664,0.833028 -1.43765,-0.339612 z m 0.15549,-0.257742 0.67458,-1.118427 0.10177,1.277712 -0.77634,-0.159332 z m 1.14936,1.353772 -0.0487,-0.610539 0.66297,0.755667 -0.61428,-0.145114 z m -1.46271,-1.374205 -1.11428,0.36087 1.69461,-1.323088 z m -3.66183,0 -0.58038,-0.962224 1.69466,1.323029 -1.11428,-0.360757 z m -1.37687,0.296596 -0.63785,0.727057 0.71616,-1.709719 -0.0783,0.982721 z m -0.0134,1.351991 0.50806,0.704492 -1.16439,-0.549474 z m 0.29434,-0.06954 1.47686,-0.348885 0.557,1.981787 -1.29803,-0.612498 z m 2.13514,1.993336 0.44564,1.585502 -1.50316,-2.084503 z m 1.58361,0 1.05754,-0.499055 -1.50322,2.084557 z m 0.1013,-0.360486 0.55705,-1.981727 1.47674,0.348885 -0.73575,1.020336 z m 2.3282,-1.56329 0.65633,0.155031 -1.1644,0.549467 z m -0.0134,-1.351988 -0.0783,-0.982603 0.71616,1.709657 z m -6.789,1.959512 1.20977,0.570916 1.36431,1.891864 -2.57413,-2.462723 z m 5.9527,0.570851 1.20977,-0.570851 -2.57408,2.46278 z"
+       id="shape.primary"
+       fill="#currentColor"
+       fill-rule="nonzero"
+       style="color:currentColor;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:0.0592357;image-rendering:auto" />
+  </g>
+</svg>

@@ -41,7 +41,7 @@ const LoginPage:NextPage = () => {
 
       if(response && response.success === true) {
         mutateUser(response.user);
-        router.push('/dashboard');
+        router.push('/dashboard/overview');
       }
 
     } catch(e) {
@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
     const user = req.session.user;
 
     if(user) {
-      res.setHeader('location', '/dashboard');
+      res.setHeader('location', '/dashboard/overview');
       res.statusCode = 302;
       res.end();
     }

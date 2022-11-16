@@ -1,8 +1,9 @@
+import type { ReactElement } from 'react';
 type ErrorMessageProps = {}
 
-export default function ErrorMessage<ErrorMessageProps>(): React.Element {
+export default function ErrorMessage<ErrorMessageProps>(): ReactElement {
 
   return (
-
+    <></>
   );
 }

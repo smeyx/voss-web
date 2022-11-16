@@ -11,7 +11,7 @@ class EmailTakenError extends Error {
 
 type UserModelResponse = {
   success: boolean,
-  errorCode?: boolean,
+  errorCode?: string,
   errorMessage?: string,
 }
 
