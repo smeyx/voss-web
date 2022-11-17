@@ -1,7 +1,7 @@
 import fetchJSON from '@lib/fetchJSON';
 import Link from 'next/link';
 import Image from 'next/image';
-import Logo from '@images/logo_wide2.svg';
+import Logo from '@images/logo_w.svg';
 import { useRouter } from 'next/router';
 import type { KeyedMutator } from 'swr';
 import type { User } from '@models/user/user.types';
