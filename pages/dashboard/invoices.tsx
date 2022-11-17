@@ -15,11 +15,14 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     <Dashboard user={ user } activeTab={ 'invoices' }>
       <>
         <nav>
-          <button className="p-1 border rounded-full border-primary-500 hover:bg-primary-600 dark:border-secondary-500 dark:hover:bg-secondary-600 transition-colors">
-            <Plus size="20" />
+          <button className="flex items-center px-4 py-2 rounded-md bg-primary-500 hover:bg-primary-600 dark:bg-secondary-500 dark:hover:bg-secondary-600 transition-colors">
+            <Plus size="16" className="mr-2" />
+            Create invoice
           </button>
         </nav>
-        <span>{ 'this is the invoices view' }</span>
+        <br />
+        <div></div>
+        <div>{ 'this is the invoices view' }</div>
       </>
     </Dashboard>
   );
