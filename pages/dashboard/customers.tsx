@@ -12,15 +12,26 @@ interface PageProps {
 }
 
 const Customers: NextPage<PageProps> = ({ user }) => {
-  let key = 1;
   const [ createCustomer, setCreateCustomer ] = useState<boolean>(false);
 
-  const clearCustomerForm = () => {
-    key=2;
-  };
+  function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    try {
+      const name = event.currentTarget.customer_name.value;
+      const email = event.currentTarget.customer_email.value;
+      const street = event.currentTarget.customer_address_street.value;
+      const houseno = event.currentTarget.customer_address_houseno.value;
+      const city = event.currentTarget.customer_address_city.value;
+      const zipcode = event.currentTarget.customer_address_zipcode.value;
+
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <Dashboard key={ key } user={ user } activeTab={ 'customers' }>
+    <Dashboard user={ user } activeTab={ 'customers' }>
       <>
         <nav>
           <button 
@@ -35,7 +46,10 @@ const Customers: NextPage<PageProps> = ({ user }) => {
         }
 
         { createCustomer && 
-          <NewCustomerForm key={ createCustomer }/>
+          <NewCustomerForm 
+          key={ +createCustomer }
+            submitCustomerForm={ submitCustomerForm }
+            clearCustomerForm={ () => setCreateCustomer(!createCustomer) }/>
         }
         </>
     </Dashboard>

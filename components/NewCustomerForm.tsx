@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import type { ReactElement } from 'react';
 
-interface NewCustomerForm {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+interface newCustomerFormProps {
+  submitCustomerForm: (event: React.FormEvent<HTMLFormElement>) => void,
+  clearCustomerForm: () => void
 }
-
-export default function NewCustomerForm<newCustomerFormProps>(): React.Element {
+const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, clearCustomerForm}): ReactElement => {
   const [ customerEmail, setCustomerEmail ] = useState<string>('');
   const [ customerName, setCustomerName ] = useState<string>('');
   const [ customerStreet, setCustomerStreet ] = useState<string>('');
@@ -13,9 +14,11 @@ export default function NewCustomerForm<newCustomerFormProps>(): React.Element {
   const [ customerCity, setCustomerCity ] = useState<string>('');
 
   return (
-    <div className="p-4 mt-10 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-700" >
+    <div className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:border-neutral-800" >
       <h1 className="text-lg font-bold">Create a new Customer</h1>
-      <form className="flex flex-col flex-1 mt-4 gap-2">
+      <form 
+        onSubmit={ submitCustomerForm }
+        className="flex flex-col flex-1 mt-4 gap-2">
         <div className="md:grid md:grid-cols-6 gap-4">
           <div className="col-span-full">
             <label className="block" htmlFor="customer_name">Name</label>
@@ -85,10 +88,11 @@ export default function NewCustomerForm<newCustomerFormProps>(): React.Element {
             className="inline-flex items-center px-4 py-2 mr-4 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Cancel</button>
           <button 
             type="submit" 
-            onClick={ () => submitCustomerForm() }
             className="inline-flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Save</button>
         </div>
       </form>
     </div>
   );
 }
+
+export default NewCustomerForm;
