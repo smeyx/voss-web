@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
@@ -10,6 +11,7 @@ interface PageProps {
 }
 
 const Invoices: NextPage<PageProps> = ({ user }) => {
+  const [ newInvoice, setNewInvoice] = useState<boolean>(false);
 
   return (
     <Dashboard user={ user } activeTab={ 'invoices' }>
