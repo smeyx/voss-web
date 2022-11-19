@@ -10,6 +10,7 @@ exports.up = function(knex) {
       table.string('name').notNullable();
       table.string('email').notNullable().unique();
       table.datetime('time_created', { useTz: true }).notNullable();
+      table.datetime('time_updated', { useTz: true }).notNullable();
     });
 };
 
