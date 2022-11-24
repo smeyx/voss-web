@@ -22,6 +22,8 @@ const LoginPage:NextPage = () => {
   const router = useRouter();
   const { mutateUser } = useUser();
 
+  let { email } = router.query || ''; 
+
   const handleSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -36,7 +38,7 @@ const LoginPage:NextPage = () => {
       });
 
       if(response && response.success === false) {
-        setExtraProps({ errorResponse: 'Login failed.' });
+        setExtraProps({ errorResponse: 'Your e-mail or password is not right. Try again.' });
       }
 
       if(response && response.success === true) {
@@ -51,7 +53,7 @@ const LoginPage:NextPage = () => {
 
   return (
     <div className="container mx-auto text-gray-800">
-        <AuthenticationForm onSubmit={ handleSubmitLogin } { ...extraProps }>Login</AuthenticationForm>
+      <AuthenticationForm onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Login</AuthenticationForm>
     </div>
   );
 }

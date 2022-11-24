@@ -9,6 +9,7 @@ exports.up = function(knex) {
       table.increments('id').unsigned();
       table.string('email').notNullable().unique();
       table.datetime('time_created', { useTz: true }).notNullable();
+      table.datetime('time_updated', { useTz: true }).notNullable();
       table.text('password');
     });
 };

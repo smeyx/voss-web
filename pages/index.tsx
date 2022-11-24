@@ -19,11 +19,13 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
     const user = req.session.user;
 
     if(user === undefined) {
-      res.setHeader('location', '/login');
-      res.statusCode = 302;
-      res.end();
+      return {
+        redirect: {
+          statusCode: 302,
+          destination: '/login',
+        }
+      }
     }
-
 
     return {
       redirect: {

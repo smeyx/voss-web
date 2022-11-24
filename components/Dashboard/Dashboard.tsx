@@ -18,7 +18,7 @@ const Dashboard: React.FC<DashBoardProps> = ({ children, user, activeTab = 'over
         </div>
         <SubNav activeTab={ activeTab }/>
       </div>
-      <div className="px-10 sm:w-4/5">
+      <div className="sm:px-10 sm:w-4/5">
         { children }
       </div>
     </div>

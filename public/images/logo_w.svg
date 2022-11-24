@@ -8,6 +8,7 @@
    height="100%"
    version="1.1"
    id="svg878"
+   role="graphics-document"
    sodipodi:docname="logo_w.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -43,6 +44,7 @@
        id="rect1125" />
   </defs>
   <g
+    role="graphics-document"
      aria-label="VOSS"
      transform="matrix(0.25501504,0,0,0.25501504,-20.565755,-8.887833)"
      id="text1123"

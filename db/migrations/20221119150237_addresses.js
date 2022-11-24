@@ -11,6 +11,7 @@ exports.up = function(knex) {
       table.string('housenumber').notNullable();
       table.string('city').notNullable();
       table.string('postalcode').notNullable();
+      table.integer('customer_id').notNullable();
       table.datetime('time_created', { useTz: true }).notNullable();
       table.datetime('time_updated', { useTz: true }).notNullable();
     });

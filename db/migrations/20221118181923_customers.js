@@ -8,7 +8,7 @@ exports.up = function(knex) {
     .createTable('customers', table => {
       table.increments('id').unsigned();
       table.string('name').notNullable();
-      table.string('email').notNullable().unique();
+      table.string('email').notNullable();
       table.datetime('time_created', { useTz: true }).notNullable();
       table.datetime('time_updated', { useTz: true }).notNullable();
     });

@@ -42,6 +42,7 @@ export class UserModel {
       .where('email', email)
       .first();
 
+    //TODO: use status message
     if(!res) {
       console.log('user not found.');
       throw new Error();
@@ -50,6 +51,7 @@ export class UserModel {
     const preHash = createHmac('sha256', process.env.COOKIE_PW as string).update(password).digest('hex');
     const login = await bcrypt.compare(preHash, res.password);
 
+    //TODO: use status message
     if(!login) {
       console.log('password did not match.');
       throw new Error();
