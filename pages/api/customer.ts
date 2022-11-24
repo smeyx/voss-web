@@ -12,10 +12,9 @@ async function newCustomerRoute(req: NextApiRequest, res: NextApiResponse) {
       try {
         const { customer_id } = await req.body;
         const customers = customer_id > 0 ? await model.find(customer_id) : await model.find();
-        console.log(customers)
-        res.status(200).json({ success: true, customers})
-    } catch(e) {
-    console.log(e);
+        res.status(200).json({ success: true, customers })
+      } catch (e) {
+        console.log(e);
         res.status(200).json({ success: false })
       }
       break;
