@@ -8,9 +8,14 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User | false>
   if(req.session && req.session.user?.id) {
     const users = new UserModel();
     const user: User = await users.findById(req.session.user.id);
-    user.isLoggedIn = true;
+    if(user) {
+      user.isLoggedIn = true;
+      res.json(user);
+    } else {
+      req.session.destroy();
+      res.status(200).json(false);
+    }
 
-    res.json(user);
   } else {
     res.status(200).json(false);
   }

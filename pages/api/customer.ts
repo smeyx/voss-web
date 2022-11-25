@@ -4,15 +4,26 @@ import { CustomerModel } from '@models/customer';
 import type { Customer } from '@models/customer';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 
-async function newCustomerRoute(req: NextApiRequest, res: NextApiResponse) {
+async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
   const model = new CustomerModel();
 
   switch(req.method) {
     case 'GET':
       try {
-        const { customer_id } = await req.body;
-        const customers = customer_id > 0 ? await model.find(customer_id) : await model.find();
-        res.status(200).json({ success: true, customers })
+        //TODO: looks unnecessary
+        const customer_id = parseInt(req.query.customer_id as string);
+        const user_id = parseInt(req.query.user_id as string);
+        const page = parseInt(req.query.page as string);
+        const size = parseInt(req.query.size as string);
+
+        if( user_id && page && size) {
+          const start: number = (page -1) * size;
+          const customers = customer_id > 0 ? await model.find(user_id, customer_id, start, size) : await model.find(user_id, start, size);
+
+          res.status(200).json({ success: true, customers })
+        } else {
+          res.status(200).json({ success: false });
+        }
       } catch (e) {
         console.log(e);
         res.status(200).json({ success: false })
@@ -48,4 +59,4 @@ async function newCustomerRoute(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withIronSessionApiRoute(newCustomerRoute, sessionParameters);
+export default withIronSessionApiRoute(customerRoute, sessionParameters);

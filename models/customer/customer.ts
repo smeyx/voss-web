@@ -1,19 +1,30 @@
 import knex from '@lib/db';
-import Customers from '@pages/dashboard/customers';
 import { Knex } from 'knex';
 import type { Customer } from './customer.types';
 
 export class CustomerModel {
-  async find(id?: number): Promise<Customer> {
+  async find(user_id: number, start?: number, end?: number, id?: number): Promise<Customer> {
     const findById = (queryBuilder: Knex.QueryBuilder, customerId: number) => {
       if (customerId > 0) {
-        queryBuilder.where('customer.id', customerId).first();
+        queryBuilder.where('customers.id', customerId).first();
+      }
+    }
+    
+    const pagination = (queryBuilder: Knex.QueryBuilder, start: number, end:number) => {
+      if(start >= 0 && end >= 0) {
+        if(start === 0) {
+          queryBuilder.limit(end);
+        } else {
+          queryBuilder.limit(start);
+          queryBuilder.offset(end);
+        }
       }
     }
 
     const customers = await knex('customers')
       .join('addresses', 'customers.id', '=', 'addresses.customer_id')
       .modify(findById, id)
+      .modify(pagination, start, end)
       .select(
         'customers.id',
         'name',
@@ -22,7 +33,8 @@ export class CustomerModel {
         'addresses.housenumber',
         'addresses.city',
         'addresses.postalcode'
-      );
+      )
+    .where('customers.user_id', user_id);
 
     const newCustomers = customers.reduce((acc: Customer[], customer:{ id: number, name: string, email: string, street: string, housenumber: string, city: string, postalcode: string }) => {
       acc.push({

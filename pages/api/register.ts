@@ -17,7 +17,6 @@ async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
   try {
     let status: RegistrationResponse;
     const resp = await users.register(email, password);
-    console.log(resp);
     if(resp && resp.success === true) {
       status = { success: true };
     } else {

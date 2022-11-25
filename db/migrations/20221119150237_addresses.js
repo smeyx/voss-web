@@ -14,6 +14,7 @@ exports.up = function(knex) {
       table.integer('customer_id').notNullable();
       table.datetime('time_created', { useTz: true }).notNullable();
       table.datetime('time_updated', { useTz: true }).notNullable();
+      table.foreign('customer_id').references('customers.id');
     });
 
 };

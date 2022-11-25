@@ -76,7 +76,7 @@ export class UserModel {
     const hash = await bcrypt.hash(preHash, saltRounds);
 
     const [ res ] = await knex('users')
-      .insert({ email, password: hash, time_created: new Date()})
+      .insert({ email, password: hash, time_created: new Date(), time_updated: new Date() })
       .returning('id');
 
     if(res.id) {

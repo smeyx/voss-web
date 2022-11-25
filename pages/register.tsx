@@ -11,7 +11,6 @@ export type extraProps = {
 
 const RegisterPage:NextPage = () => {
   const [extraProps, setExtraProps] = useState<extraProps>();
-  const [ email, setEmail ] = useState<string>('');
   const router = useRouter();
 
   const handleSubmitRegister = async (event: React.FormEvent<HTMLFormElement>) => {

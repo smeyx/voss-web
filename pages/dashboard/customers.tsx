@@ -3,9 +3,10 @@ import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import Dashboard from '@components/Dashboard/';
 import NewCustomerForm from '@components/NewCustomerForm';
+import CustomerList from '@components/Dashboard/Customers/CustomerList';
 import fetchJSON from '@lib/fetchJSON';
 import useSwr from 'swr';
-import { Plus } from 'phosphor-react';
+import { Plus, Minus } from 'phosphor-react';
 import type { Customer } from '@models/customer';
 import type { User } from '@models/user'
 import type { NextPage, GetServerSideProps } from 'next/types';
@@ -15,34 +16,15 @@ interface PageProps {
 }
 
 interface CustomerResponse {
-  success: string,
+  success: boolean,
   customers: Customer[]
 }
 
 const Customers: NextPage<PageProps> = ({ user }) => {
+  const [ currentPage, setCurrentPage] = useState<number>(1);
+  const [ pageSize, setPageSize] = useState<number>(10);
   const [ createCustomer, setCreateCustomer ] = useState<boolean>(false);
-  const { data, mutate: mutateCustomers } = useSwr<CustomerResponse>('/api/customer', fetchJSON)
-  let customerList;
-
-  if(data && data.customers && data.customers.length > 0) {
-    customerList = data.customers.map((c: Customer) => {
-      return (
-        <div key={ c.id } className="bg-neutral-100 shadow-sm p-4 rounded-md mb-1 border-neutral-200 border">
-          <div className="grid grid-cols-2">
-            <div className="col-span-1">
-              {c.name}
-            </div>
-            <div className="col-span-1">
-              <div className="flex flex-col">
-                <p>{c.address.street}{' '}{c.address.housenumber}</p>
-                <p>{c.address.postalcode}{' '}{c.address.city}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    });
-  }
+  const { data, mutate: mutateCustomers } = useSwr<CustomerResponse>(`/api/customer?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
 
   async function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -77,12 +59,12 @@ const Customers: NextPage<PageProps> = ({ user }) => {
           <button 
             onClick={ () => setCreateCustomer(!createCustomer) } 
             className="flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
-            <Plus size="16" className="mr-1" weight="bold"/>
+            { !createCustomer ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
             New customer
           </button>
         </nav>
         { /*TODO: make it beautiful and extract it*/ }
-        { !createCustomer && customerList }
+          { !createCustomer && data && data.success === true && <CustomerList customerList={ data.customers }><button onClick={ () => setCurrentPage(currentPage+1)}>{ '>' }</button></CustomerList> }
         
 
         { createCustomer && 
