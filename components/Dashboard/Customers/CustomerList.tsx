@@ -8,10 +8,6 @@ interface CustomerListProps {
 }
 
 const CustomerList: React.FC<CustomerListProps> = ({ customerList, children }): ReactElement => {
-  if(!customerList) return (
-    <></>
-  );
-
   const customerListElement = useMemo( 
     () => customerList.map( 
       (c: Customer ) => (
@@ -34,10 +30,12 @@ const CustomerList: React.FC<CustomerListProps> = ({ customerList, children }): 
 
   return (
     <div className="mt-5">
-      { 
-        customerList && customerList.length > 0 && customerListElement
+      { customerList && customerList.length > 0 && 
+        customerListElement
       }
-      { children }
+      { customerList && customerList.length > 0 &&
+        children
+      }
     </div>
   );
 };

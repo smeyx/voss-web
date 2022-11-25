@@ -30,7 +30,7 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse, 
 
   return (
     <div className="flex flex-col items-center max-w-lg p-6 mx-auto mt-20 bg-white border border-gray-200 rounded-xl dark:border-neutral-800 dark:bg-neutral-700 shadow-md dark:shadow-none">
-      <h1 className="text-3xl pb-8">
+      <h1 className="text-3xl pb-8 dark:text-white">
         {`${(pathname === '/login' ? 'Login' : 'Welcome')} to VOSS.`}
       </h1>
       <form className="flex flex-col flex-1 gap-2 w-full" onSubmit={onSubmit}>

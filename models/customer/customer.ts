@@ -15,8 +15,8 @@ export class CustomerModel {
         if(start === 0) {
           queryBuilder.limit(end);
         } else {
-          queryBuilder.limit(start);
-          queryBuilder.offset(end);
+          queryBuilder.limit(end);
+          queryBuilder.offset(start);
         }
       }
     }

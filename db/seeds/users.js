@@ -13,5 +13,12 @@ exports.seed = async function(knex) {
     {id: 1, email: 'thisismymail@testmailstuff.org', password: Buffer.from(pass), time_created: new Date(), time_updated: new Date()},
     {id: 2, email: 'thisismymail2@tesdfasdfsadf.dfsdfsdf', password: Buffer.from(pass), time_created: new Date(), time_updated: new Date()},
     {id: 3, email: 'thisisdfasdf@sadjfksljdfksjdf.dess', password: Buffer.from(pass), time_created: new Date(), time_updated: new Date()},
+    {
+      id: 4, 
+      email: 'simon@voss.de', 
+      password: Buffer.from(pass), 
+      time_created: new Date(), 
+      time_updated: new Date()
+    },
   ]);
 };

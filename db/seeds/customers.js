@@ -57,4 +57,18 @@ exports.seed = async function(knex) {
     },
   ]);
 
+  const customers = [];
+  for(let i = 8; i < 100; i++) {
+    customers.push(
+      {
+        id: i, 
+        name: 'Fantasia Rohloff',
+        email: 'frohloff@nothing.at',
+        time_created: new Date(),
+        time_updated: new Date(),
+      },
+    );
+  }
+
+  await knex.table('customers').insert(customers);
 };

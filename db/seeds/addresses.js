@@ -67,14 +67,42 @@ exports.seed = async function(knex) {
       time_updated: new Date(),
     },
     {
-      id: 7,
+      id: 8,
       street: 'Straße des 17. Juni',
       housenumber: '90',
       city: 'Berlin',
       postalcode: '33360',
-      customer_id: 7,
+      customer_id: 8,
+      time_created: new Date(),
+      time_updated: new Date(),
+    },
+    {
+      id: 9,
+      street: 'Straße des 17. Juni',
+      housenumber: '90',
+      city: 'Berlin',
+      postalcode: '33360',
+      customer_id: 9,
       time_created: new Date(),
       time_updated: new Date(),
     },
   ]);
+
+  const addresses = [];
+  for(let i = 10; i < 100; i++) {
+    addresses.push(
+      {
+        id: i,
+        street: 'Straße des 17. Juni',
+        housenumber: '90',
+        city: 'Berlin',
+        postalcode: '33360',
+        customer_id: i,
+        time_created: new Date(),
+        time_updated: new Date(),
+      },
+    );
+  }
+
+  await knex.table('addresses').insert(addresses);
 };

@@ -4,6 +4,7 @@ import { sessionParameters } from '@lib/session';
 import Dashboard from '@components/Dashboard/';
 import NewCustomerForm from '@components/NewCustomerForm';
 import CustomerList from '@components/Dashboard/Customers/CustomerList';
+import Pagination from '@components/Pagination';
 import fetchJSON from '@lib/fetchJSON';
 import useSwr from 'swr';
 import { Plus, Minus } from 'phosphor-react';
@@ -64,7 +65,11 @@ const Customers: NextPage<PageProps> = ({ user }) => {
           </button>
         </nav>
         { /*TODO: make it beautiful and extract it*/ }
-          { !createCustomer && data && data.success === true && <CustomerList customerList={ data.customers }><button onClick={ () => setCurrentPage(currentPage+1)}>{ '>' }</button></CustomerList> }
+          { !createCustomer && data && data.success === true && (
+            <CustomerList customerList={ data.customers }>
+              <Pagination currentPage={ currentPage } setCurrentPage={ setCurrentPage } pageSize={ pageSize } listLength={data.customers.length} />
+            </CustomerList> 
+          )}
         
 
         { createCustomer && 
