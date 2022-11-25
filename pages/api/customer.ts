@@ -20,7 +20,7 @@ async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
           const start: number = (page -1) * size;
           const customers = customer_id > 0 ? await model.find(user_id, customer_id, start, size) : await model.find(user_id, start, size);
 
-          res.status(200).json({ success: true, customers })
+          res.status(200).json({ success: true, data: customers })
         } else {
           res.status(200).json({ success: false });
         }

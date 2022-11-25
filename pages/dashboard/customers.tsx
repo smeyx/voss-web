@@ -16,8 +16,13 @@ interface PageProps {
   user: User,
 }
 
-interface CustomerResponse {
+interface CustomerApiResponse {
   success: boolean,
+  data: CustomerResponse,
+}
+
+interface CustomerResponse {
+  count: number,
   customers: Customer[]
 }
 
@@ -25,7 +30,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   const [ currentPage, setCurrentPage] = useState<number>(1);
   const [ pageSize, setPageSize] = useState<number>(10);
   const [ createCustomer, setCreateCustomer ] = useState<boolean>(false);
-  const { data, mutate: mutateCustomers } = useSwr<CustomerResponse>(`/api/customer?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
+  const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
 
   async function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -65,9 +70,9 @@ const Customers: NextPage<PageProps> = ({ user }) => {
           </button>
         </nav>
         { /*TODO: make it beautiful and extract it*/ }
-          { !createCustomer && data && data.success === true && (
-            <CustomerList customerList={ data.customers }>
-              <Pagination currentPage={ currentPage } setCurrentPage={ setCurrentPage } pageSize={ pageSize } listLength={data.customers.length} />
+          { !createCustomer && response && response.success === true && (
+            <CustomerList customerList={ response.data.customers }>
+              <Pagination currentPage={ currentPage } setCurrentPage={ setCurrentPage } pageSize={ pageSize } listLength={response.data.count} />
             </CustomerList> 
           )}
         
