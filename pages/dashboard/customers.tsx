@@ -46,7 +46,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
       const response: { success: boolean } = await fetchJSON('/api/customer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, address: { street, housenumber, city, postalcode } }),
+        body: JSON.stringify({ name, email, address: { street, housenumber, city, postalcode }, user_id: user.id,}),
       });
 
       if(response.success) {
@@ -78,10 +78,10 @@ const Customers: NextPage<PageProps> = ({ user }) => {
         
 
         { createCustomer && 
-          <NewCustomerForm 
-          key={ +createCustomer }
-            submitCustomerForm={ submitCustomerForm }
-            clearCustomerForm={ () => setCreateCustomer(!createCustomer) }/>
+          <NewCustomerForm
+            key={+createCustomer}
+            submitCustomerForm={submitCustomerForm}
+            clearCustomerForm={() => setCreateCustomer(!createCustomer)} />
         }
         </>
     </Dashboard>

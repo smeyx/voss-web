@@ -9,7 +9,7 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, setCurrentPage, pageSize, listLength }): ReactElement => {
-  const pageButtonClassName: string = 'p-4 rounded-md dark:bg-neutral-700 dark:hover:bg-neutral-600 disabled:opacity-0 transition-colors';
+  const pageButtonClassName: string = 'p-4 rounded-md bg-neutral-100 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 disabled:opacity-0 transition-colors';
   return (
     <div className="w-full flex mt-4 items-center justify-between gap-2">
       <button className={pageButtonClassName} onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
@@ -18,7 +18,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, setCurrentPage, pa
       <span className="rounded-full text-lg">
         { currentPage }
       </span>
-      <button className={pageButtonClassName} onClick={() => setCurrentPage(currentPage + 1)}>
+      <button className={pageButtonClassName} onClick={() => setCurrentPage(currentPage + 1)} disabled={(listLength < (currentPage * pageSize))}>
         <ArrowRight size="20" />
       </button>
     </div>

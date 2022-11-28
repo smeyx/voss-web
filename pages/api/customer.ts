@@ -2,6 +2,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import { CustomerModel } from '@models/customer';
 import type { Customer } from '@models/customer';
+import type { User } from '@models/user';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
@@ -16,9 +17,14 @@ async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
         const page = parseInt(req.query.page as string);
         const size = parseInt(req.query.size as string);
 
-        if( user_id && page && size) {
-          const start: number = (page -1) * size;
-          const customers = customer_id > 0 ? await model.find(user_id, customer_id, start, size) : await model.find(user_id, start, size);
+        let customers;
+        if (user_id) {
+          if (page && size) {
+            const start: number = (page - 1) * size;
+            customers = await model.find(user_id, start, size);
+          } else {
+            customers = await model.find(user_id);
+          }
 
           res.status(200).json({ success: true, data: customers })
         } else {
@@ -31,7 +37,7 @@ async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
       break;
     case 'POST':
       try {
-        const { name, email, address } = await req.body;
+        const { name, email, address, user_id } = await req.body;
         let newCustomer = await model.addCustomer({
           name,
           email,
@@ -41,7 +47,9 @@ async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
             city: address.city,
             postalcode: address.postalcode
           }
-        } as Customer);
+        } as Customer,
+          user_id
+        );
 
         if (newCustomer) {
           res.status(200).json({ success: true, newCustomer });

@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react"
+import { ReactElement, useState, useMemo } from "react"
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Eye, EyeSlash } from 'phosphor-react';
@@ -15,7 +15,7 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse, 
   const [password, setPassword] = useState<string>('');
   const [ passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
 
-  const showPasswordButton = passwordVisibility ? <EyeSlash size={20} /> : <Eye size={20} />
+  const showPasswordButton = useMemo(() => passwordVisibility ? <EyeSlash size={20} /> : <Eye size={20}/>, [passwordVisibility])
 
   const { pathname } = useRouter();
   const minLength = pathname === '/login' ? 0 : 8;
@@ -54,7 +54,7 @@ export default function AuthenticationForm({ onSubmit, children, errorResponse, 
             className="w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white dark:outline-secondary-500" />
           <button type="button"
             title={ `${ passwordVisibility ? 'Hide' : 'Show'} password`}
-            className="absolute right-0 inset-y-1 flex items-center mr-2"
+            className="absolute right-0 inset-y-1 flex items-center mr-2 dark:text-white"
             onClick={() => setPasswordVisibility(!passwordVisibility)}
           >
             { showPasswordButton }

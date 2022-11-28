@@ -16,7 +16,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customerList = [], children
 
       return customerList.map( 
         (c: Customer ) => (
-          <div key={ c.id } className="p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
+          <div key={ c.id } className="h-16 p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
             <div className="grid grid-cols-2">
               <div className="col-span-1">
                 {c.name}

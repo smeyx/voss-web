@@ -7,29 +7,30 @@ interface PaginationCustomerListResponse {
   customers: Customer[],
 }
 export class CustomerModel {
-  async find(user_id: number, start?: number, end?: number, id?: number): Promise<PaginationCustomerListResponse> {
+  async find(user_id: number, offset?: number, limit?: number, id?: number): Promise<PaginationCustomerListResponse> {
     const findById = (queryBuilder: Knex.QueryBuilder, customerId: number) => {
       if (customerId > 0) {
         queryBuilder.where('customers.id', customerId).first();
       }
     }
     
-    const pagination = (queryBuilder: Knex.QueryBuilder, start: number, end:number) => {
-      if(start >= 0 && end >= 0) {
-        if(start === 0) {
-          queryBuilder.limit(end);
+    const pagination = (queryBuilder: Knex.QueryBuilder, offset: number, limit:number) => {
+      if(offset >= 0 && limit >= 0) {
+        if(offset === 0) {
+          queryBuilder.limit(limit);
         } else {
-          queryBuilder.limit(start);
-          queryBuilder.offset(end);
+          //TODO: stupid wording
+          queryBuilder.limit(limit);
+          queryBuilder.offset(offset);
         }
       }
     }
 
     const [customers, count] = await Promise.all([
       knex('customers')
-      .join('addresses', 'customers.id', '=', 'addresses.customer_id')
+      .leftJoin('addresses', 'customers.id', '=', 'addresses.customer_id')
       .modify(findById, id)
-      .modify(pagination, start, end)
+      .modify(pagination, offset, limit)
       .select(
         'customers.id',
         'name',
@@ -65,13 +66,14 @@ export class CustomerModel {
     return { count: respCount, customers: newCustomers };
   }
 
-  async addCustomer(customer: Customer) {
+  async addCustomer(customer: Customer, user_id: number) {
     const [ res ] = await knex('customers')
       .insert({ 
         name: customer.name,
         email: customer.email,
         time_created: new Date(),
-        time_updated: new Date()
+        time_updated: new Date(),
+        user_id,
       })
       .returning('id');
 
