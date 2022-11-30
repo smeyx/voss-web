@@ -28,7 +28,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerName } 
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerName(e.target.value) } } 
-              className="w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
           <div className="col-span-full">
             <label className="block" htmlFor="customer_email">E-Mail</label>
@@ -38,7 +38,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerEmail } 
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerEmail(e.target.value) } } 
-              className="w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
           <div className="col-span-4">
             <label htmlFor="customer_address_street" className="block">Street</label>
@@ -48,7 +48,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerStreet } 
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerStreet(e.target.value) } } 
-              className="w-full p-2 mb-4 mr-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 mr-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
           <div className="col-span-2">
             <label htmlFor="customer_address_houseno" className="block">House number</label>
@@ -58,7 +58,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerHouseNo } 
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerHouseNo(e.target.value) } } 
-              className="w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
           <div className="col-span-2">
             <label htmlFor="customer_address_zipcode" className="block">ZIP / Postal code</label>
@@ -68,7 +68,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerZipCode }
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerZipCode(e.target.value) } } 
-              className="w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
           <div className="col-span-4">
             <label htmlFor="customer_address_city" className="block">City</label>
@@ -78,7 +78,7 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
               required 
               value={ customerCity }
               onChange={ (e: React.ChangeEvent<HTMLInputElement>) => { setCustomerCity(e.target.value) } } 
-              className="w-full p-2 mb-4 mr-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
+              className="h-12 w-full p-2 mb-4 mr-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white"/>
           </div>
         </div>
         <div className="text-right">
