@@ -19,6 +19,9 @@ type LoginResponse = {
 
 const LoginPage:NextPage = () => {
   const [extraProps, setExtraProps] = useState<extraProps>();
+  const [ authInProgress, setAuthInProgress ] = useState<boolean>(false);
+  const [ authSuccess, setAuthSuccess ] = useState<boolean>(false);
+
   const router = useRouter();
   const { mutateUser } = useUser();
 
@@ -31,17 +34,20 @@ const LoginPage:NextPage = () => {
       const email = event.currentTarget.email.value;
       const password = event.currentTarget.password.value;
 
+      setAuthInProgress(true);
       const response: LoginResponse = await fetchJSON('/api/login', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ email, password }) 
       });
 
+      setAuthInProgress(false);
       if(response && response.success === false) {
         setExtraProps({ errorResponse: 'Your e-mail or password is not right. Try again.' });
       }
 
       if(response && response.success === true) {
+        setAuthSuccess(true);
         mutateUser(response.user);
         router.push('/dashboard/overview');
       }
@@ -53,7 +59,7 @@ const LoginPage:NextPage = () => {
 
   return (
     <div className="container mx-auto text-gray-800">
-      <AuthenticationForm onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Login</AuthenticationForm>
+      <AuthenticationForm authInProgress={ authInProgress } authSuccess={ authSuccess } onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Login</AuthenticationForm>
     </div>
   );
 }

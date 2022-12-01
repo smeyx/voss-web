@@ -7,6 +7,7 @@ specifiers:
   '@types/react': 18.0.24
   autoprefixer: ^10.4.12
   bcrypt: ^5.1.0
+  clsx: ^1.2.1
   eslint: ^8.26.0
   eslint-config-next: 13.0.0
   iron-session: ^6.3.1
@@ -25,6 +26,7 @@ specifiers:
 
 dependencies:
   bcrypt: 5.1.0
+  clsx: 1.2.1
   iron-session: 6.3.1_next@13.0.0
   knex: 2.3.0_sqlite3@5.1.2
   next: 13.0.0_biqbaboplfbrettd7655fr4n2y
@@ -2447,6 +2449,11 @@ packages:
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+    dev: false
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert/1.9.3:

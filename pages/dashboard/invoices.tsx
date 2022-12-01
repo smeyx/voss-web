@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import useSwr from 'swr';
 import Dashboard from '@components/Dashboard/';
+import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import { protectedSsrPage } from '@lib/session'
 import { Plus, Minus } from 'phosphor-react';
@@ -32,12 +33,12 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     <Dashboard user={ user } activeTab={ 'invoices' }>
       <>
         <nav>
-          <button 
+          <Button 
             onClick={ () => setCreateInvoice(!createInvoice) } 
             className="flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
             { !createInvoice ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
             New invoice
-          </button>
+          </Button>
         </nav>
         <br />
         <div></div>

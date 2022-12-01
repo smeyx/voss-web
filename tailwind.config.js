@@ -4,7 +4,11 @@ module.exports = {
   content: ['./pages/**/*.{jsx,js,tsx,ts}', './components/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      }
+    },
     colors: {
       'primary': {
         50: '#62f8ee',

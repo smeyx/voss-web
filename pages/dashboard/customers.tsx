@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import Dashboard from '@components/Dashboard/';
-import NewCustomerForm from '@components/NewCustomerForm';
+import NewCustomerForm from '@components/Dashboard/Customers/NewCustomerForm';
 import CustomerList from '@components/Dashboard/Customers/CustomerList';
 import Pagination from '@components/Pagination';
+import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import useSwr from 'swr';
 import { Plus, Minus } from 'phosphor-react';
@@ -62,18 +63,21 @@ const Customers: NextPage<PageProps> = ({ user }) => {
     <Dashboard user={ user } activeTab={ 'customers' }>
       <>
         <nav>
-          <button 
+          <Button 
             onClick={ () => setCreateCustomer(!createCustomer) } 
             className="flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
             { !createCustomer ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
             New customer
-          </button>
+          </Button>
         </nav>
         { /*TODO: make it beautiful and extract it*/ }
           { !createCustomer && response && response.success === true && (
-            <CustomerList customerList={ response.data.customers }>
-              <Pagination currentPage={ currentPage } setCurrentPage={ setCurrentPage } pageSize={ pageSize } listLength={response.data.count} />
-            </CustomerList> 
+          <>
+            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
+            <CustomerList customerList={response.data.customers}>
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
+            </CustomerList>
+          </>
           )}
         
 
