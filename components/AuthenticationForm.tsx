@@ -14,6 +14,7 @@ export interface AuthenticationFormProps {
   errorResponse?: string
 }
 
+//TODO: rethink approach. 
 export default function AuthenticationForm({ onSubmit, authInProgress, authSuccess, children, errorResponse, preFillEmail = ''}: AuthenticationFormProps): ReactElement | null {
   const [email, setEmail] = useState<string>(preFillEmail);
   const [password, setPassword] = useState<string>('');
@@ -23,6 +24,7 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
 
   const { pathname } = useRouter();
   const minLength = pathname === '/login' ? 0 : 8;
+  const passwordAutocomplete = pathname === '/login' ? 'current-password' : 'new-password';
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.currentTarget.value);
@@ -40,7 +42,9 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
       <form className="flex flex-col flex-1 gap-2 w-full" onSubmit={onSubmit}>
         <label className="font-bold dark:text-white" htmlFor="email">E-Mail</label>
         <input type="email" 
+        name="email"
         placeholder="E-Mail" 
+        autoComplete="username"
         id="email" 
         required 
         value={email} 
@@ -50,7 +54,9 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
         <div className="relative flex items-center mb-6 ">
           <input type={ passwordVisibility ? 'text' : 'password' }
             placeholder="Password"
-            id="password"
+            autoComplete={ passwordAutocomplete }
+            id="new-password"
+            name="password"
             required
             minLength={minLength}
             value={password}

@@ -73,7 +73,6 @@ const Customers: NextPage<PageProps> = ({ user }) => {
         { /*TODO: make it beautiful and extract it*/ }
           { !createCustomer && response && response.success === true && (
           <>
-            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
             <CustomerList customerList={response.data.customers}>
               <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
             </CustomerList>

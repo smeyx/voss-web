@@ -36,6 +36,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customerList = [], children
 
   return (
     <div className="mt-5">
+      { customerList && customerList.length > 0 ? children : null }
       <div>
         { customerList && customerList.length > 0 && 
           customerListElement
