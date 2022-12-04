@@ -30,11 +30,13 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ positionPrice, setPositionPrice ] = useState<string>('0.0');
   const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
-  const handlePriceChange = (price: string): string => {
-    console.log(Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price)));
-    return Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price));
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    let price = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).formatToParts(e.currentTarget.value);
+    console.log(price);
+    // e.currentTarget.value = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price)) 
+    // setPositionPrice(price);
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.FormEvent<SubmitEvent>): void => {
     event.preventDefault();
     console.log(event.currentTarget);
   }
@@ -51,7 +53,6 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
           </Button>
         </nav>
         <br />
-        <div></div>
         <div>{ 'this is the invoices view' }</div>
         <div className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:border-neutral-800" >
           <h1 className="text-lg font-bold">Create a new invoice</h1>
@@ -113,7 +114,8 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   inputMode="numeric"
                   name="invoice_position_price[]"
                   autoComplete="off"
-                  onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
+                  onChange={ (e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e) }
+                  // onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
                   className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
               </div>
             </div>
