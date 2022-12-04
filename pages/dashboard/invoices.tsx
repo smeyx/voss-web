@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useSwr from 'swr';
 import Dashboard from '@components/Dashboard/';
 import Button from '@components/Button';
@@ -27,7 +27,16 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
+  const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
   const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
+  
+  const handlePriceChange = (price: string): number => {
+    return Intl.NumberFormat('de-DE', { style: 'currency' currency: 'EUR'}).format(parseFloat(price));
+  };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    console.log(event.currentTarget);
+  }
 
   return (
     <Dashboard user={ user } activeTab={ 'invoices' }>
@@ -45,7 +54,8 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         <div>{ 'this is the invoices view' }</div>
         <div className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:border-neutral-800" >
           <h1 className="text-lg font-bold">Create a new invoice</h1>
-          <form className="flex flex-col flex-1 mt-4 gap-2">
+          <form className="flex flex-col flex-1 mt-4 gap-2"
+            onSubmit={ (e: React.FormEvent<SubmitEvent>) => handleSubmit(e) }>
             <div className="md:grid md:grid-cols-6 gap-4">
               <div className="col-span-full">
                 <label htmlFor="invoice_customer" className="block">Customer { invoiceCustomerId }</label>
@@ -84,6 +94,34 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   { ['weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
+              <div className="col-span-5">
+                <label htmlFor="invoice_position">Position</label>
+                <input
+                  type="text"
+                  name="invoice_position[]"
+                  autoComplete="off"
+                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
+              </div>
+              <div className="col-span-1">
+                <label htmlFor="invoice_position">Price</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="\d"
+                  name="invoice_price[]"
+                  autoComplete="off"
+                  step="any"
+                  onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setPositionPrice(e) }
+                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
+              </div>
+            </div>
+            <div className="text-right">
+              <Button
+                type="button"
+                className="inline-flex items-center px-4 py-2 mr-4 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Cancel</Button>
+              <Button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Save</Button>
             </div>
           </form>
         </div>

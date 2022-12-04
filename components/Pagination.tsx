@@ -18,7 +18,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, setCurrentPage, pa
         <ArrowLeft size="20" />
       </Button>
       <span className="rounded-md p-3 w-24 text-center">
-        { currentPage } of { lastPage }
+        { currentPage } of { lastPage > 0 ? lastPage : 1 }
       </span>
       <Button className={pageButtonClassName} onClick={() => setCurrentPage(currentPage + 1)} disabled={(listLength < (currentPage * pageSize))}>
         <ArrowRight size="20" />

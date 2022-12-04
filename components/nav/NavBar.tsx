@@ -29,7 +29,7 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
     : <AuthButton authLink="/login">Login</AuthButton>
 
   return ( 
-    <nav className="sm:sticky sm:bg-neutral-50 top-0 flex flex-row items-center justify-between py-4 mx-auto">
+    <nav className="sm:sticky sm:bg-neutral-50 dark:sm:bg-neutral-800 top-0 flex flex-row items-center justify-between py-4 mx-auto">
       <Link href="/" className="text-primary-500 dark:text-secondary-500" aria-label="Back to Home" >
         <Logo height="30" style={{ color: 'inherit' }} alt="Logo showing a Fox and the text VOSS" role="graphics-document"/>
       </Link>
