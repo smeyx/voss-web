@@ -27,11 +27,12 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
-  const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
+  const [ positionPrice, setPositionPrice ] = useState<string>('0.0');
   const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
-  const handlePriceChange = (price: string): number => {
-    return Intl.NumberFormat('de-DE', { style: 'currency' currency: 'EUR'}).format(parseFloat(price));
+  const handlePriceChange = (price: string): string => {
+    console.log(Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price)));
+    return Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price));
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -94,24 +95,25 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   { ['weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
-              <div className="col-span-5">
-                <label htmlFor="invoice_position">Position</label>
+              <div className="col-span-4">
+                <label htmlFor="invoice_position_name">Position</label>
                 <input
                   type="text"
-                  name="invoice_position[]"
+                  placeholder="Name"
+                  name="invoice_position_name[]"
                   autoComplete="off"
                   className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
               </div>
-              <div className="col-span-1">
-                <label htmlFor="invoice_position">Price</label>
+              <div className="col-span-2">
+                <label htmlFor="invoice_position_price">Price</label>
                 <input
                   type="text"
+                  value={ Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(parseFloat(positionPrice)) }
+                  placeholder="Price"
                   inputMode="numeric"
-                  pattern="\d"
-                  name="invoice_price[]"
+                  name="invoice_position_price[]"
                   autoComplete="off"
-                  step="any"
-                  onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setPositionPrice(e) }
+                  onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
                   className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
               </div>
             </div>
