@@ -36,7 +36,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     // e.currentTarget.value = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price)) 
     // setPositionPrice(price);
   };
-  const handleSubmit = (event: React.FormEvent<SubmitEvent>): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     console.log(event.currentTarget);
   }
@@ -57,7 +57,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         <div className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:border-neutral-800" >
           <h1 className="text-lg font-bold">Create a new invoice</h1>
           <form className="flex flex-col flex-1 mt-4 gap-2"
-            onSubmit={ (e: React.FormEvent<SubmitEvent>) => handleSubmit(e) }>
+            onSubmit={ (e: React.FormEvent<HTMLFormElement>) => handleSubmit(e) }>
             <div className="md:grid md:grid-cols-6 gap-4">
               <div className="col-span-full">
                 <label htmlFor="invoice_customer" className="block">Customer { invoiceCustomerId }</label>

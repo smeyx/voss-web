@@ -8,7 +8,7 @@ import Pagination from '@components/Pagination';
 import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import useSwr from 'swr';
-import { Plus, Minus } from 'phosphor-react';
+import { Plus, Minus, Spinner } from 'phosphor-react';
 import type { Customer } from '@models/customer';
 import type { User } from '@models/user'
 import type { NextPage, GetServerSideProps } from 'next/types';
@@ -58,6 +58,13 @@ const Customers: NextPage<PageProps> = ({ user }) => {
       console.log(error);
     }
   }
+  
+  
+  const Loading = (
+    <div className="flex items-center justify-center mt-10">
+      <Spinner size={20} className="animate-spin-slow" />
+    </div>
+  );
 
   return (
     <Dashboard user={ user } activeTab={ 'customers' }>
@@ -71,6 +78,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
           </Button>
         </nav>
         { /*TODO: make it beautiful and extract it*/ }
+          { !response && Loading}
           { !createCustomer && response && response.success === true && (
           <>
             <CustomerList customerList={response.data.customers}>
