@@ -2,27 +2,39 @@ import { useState } from 'react';
 import type { ReactElement } from 'react';
 
 interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-   currency: string;
-   startValue?: number; 
+  currency: string;
+  startValue?: number;
+  setValue?: (value: number) => void
 }
 
-export default function CurrencyInput({ currency, startValue = 0, ...props }: CurrencyInputProps): ReactElement {
-  const [value, setValue] = useState<number>(0.0);
+export default function CurrencyInput({ currency, startValue = 0.0, setValue, ...props }: CurrencyInputProps): ReactElement {
+  const [rawValue, setRawValue] = useState<number>(startValue);
 
-  const formatValue = (value: string | number): string => '0';
+  const formatValue = (value: number): string => {
+    const formattedValue = Intl.NumberFormat('de-DE').format(value)
+    return formattedValue;
+  };
+  
+  const cleanValue = (value: string): number => {
+    return parseFloat(value.replaceAll(/\D/g, ''));
+  }
+
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.selectionStart)
+    setRawValue(cleanValue(e.currentTarget.value));
+    console.log('raw', rawValue);
+    console.log('format', formatValue(rawValue));
+    console.log('selection start', e.currentTarget.selectionStart)
   }
   return (
     <div className="relative flex items-center mb-4">
       <input
         type="text"
         {...props}
-        value={formatValue(value)}
+        value={formatValue(rawValue)}
         inputMode="numeric"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
-        className="h-10 w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
-      <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-800">{currency}</span>
+        className="h-10 w-full p-2 border border-neutral-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+      <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span>
     </div>
   )
 }

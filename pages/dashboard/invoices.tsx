@@ -28,7 +28,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
-  const [ positionPrice, setPositionPrice ] = useState<string>('0.0');
+  const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
   const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
@@ -64,7 +64,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 <select 
                   name="invoice_customer" 
                   onChange={ (e: React.ChangeEvent<HTMLSelectElement>) => setInvoiceCustomerId(e.target.value)}
-                  className="w-full sm:w-auto h-10 mb-4 px-4 py-2 bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-800">
+                  className="w-full sm:w-auto h-10 mb-4 px-4 py-2 bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-900">
                   {response?.data.customers && response.data.customers.map((c: Customer) => (<option value={c.id} key={c.id}>{c.name}</option>))}
                 </select>
               </div>
@@ -76,7 +76,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   required
                   value={invoiceName}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceName(e.target.value) }}
-                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
+                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
               <div className="col-span-full sm:col-span-3">
                 <label htmlFor="invoice_date" className="block">Schedule invoice</label>
@@ -86,13 +86,13 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   required
                   value={ invoiceDate.toISOString().substring(0, 10)}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceDate(new Date(e.target.value)) }}
-                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
+                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
               <div className="col-span-full sm:col-span-3">
                 <label htmlFor="invoice_date_repeat" className="block">Schedule</label>
                 <select
                   name="invoice_date_schedule"
-                  className="h-10 w-full mb-4 px-4 py-2 bg-clip-padding border bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-800">
+                  className="h-10 w-full mb-4 px-4 py-2 bg-clip-padding border bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-900">
                   { ['once', 'weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
@@ -103,7 +103,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   placeholder="Name"
                   name="invoice_position_name[]"
                   autoComplete="off"
-                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
+                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
               <div className="col-span-full sm:col-span-2">
                 <label htmlFor="invoice_position_price">Price</label>
@@ -111,20 +111,25 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   currency={ currency }
                   placeholder="Price"
                   name="invoice_position_price[]"
-                  autoComplete="off"/>
-                <div className="relative flex items-center mb-4">
-                  <input
-                    type="text"
-                    value={ positionPrice }
-                    placeholder="Price"
-                    inputMode="numeric"
-                    name="invoice_position_price[]"
-                    autoComplete="off"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
-                    // onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
-                    className="h-10 w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white" />
-                  <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-800">{ currency }</span>
+                  autoComplete="off"
+                  startValue={positionPrice}
+                  setValue={ setPositionPrice }
+                  />
+                { /*
+                // <div className="relative flex items-center mb-4">
+                //   <input
+                //     type="text"
+                //     value={ positionPrice }
+                //     placeholder="Price"
+                //     inputMode="numeric"
+                //     name="invoice_position_price[]"
+                //     autoComplete="off"
+                //     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
+                //     // onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
+                //     className="h-10 w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+                //   <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-800">{ currency }</span>
                 </div>
+  */}
               </div>
             </div>
             <div className="text-right">
