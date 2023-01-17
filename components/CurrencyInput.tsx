@@ -37,16 +37,18 @@ export default function CurrencyInput({
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    const oldSelection = e.currentTarget.selectionStart;
+    const oldSelection: number = e.currentTarget.selectionStart || 0;
 
-    const clean = cleanValue(value);
+    const clean: number = cleanValue(value);
     setRawValue(clean);
     if (setValue) {
       setValue(clean);
     }
-    const cursorShift: number = ( formatValue(rawValue).length - value.length )
+    console.log(formatValue(clean).length, value.length);
+    const cursorShift: number = ( formatValue(clean).length - value.length )
     const newCursorPosition = cursorShift > 0 ? cursorShift : 0;
-    setCursorPosition(oldSelection || 0);
+    console.log(newCursorPosition);232
+    setCursorPosition(oldSelection);
   }
   
   const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
