@@ -18,20 +18,16 @@ export default function CurrencyInput({
   const [rawValue, setRawValue] = useState<number>(startValue);
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  // const [ formattedValue, setFormattedValue ] = useState<string>(startValue)
+  const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
 
   const formatValue = (value: number): string => {
-    const formattedValue = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD'}).format(value ? value : 0)
+    const formattedValue = formatter.format(value ? value : 0)
     return formattedValue;
   };
   
   const cleanValue = (value: string): number => {
     if(!value) return 0.0;
-    console.log('value ', value);
-    const splitValue = value.split('.');
-    console.log(splitValue);
-    const purgedValue = value.replaceAll(decimalSeparator, '.');
-    console.log('purged: ', purgedValue);
+    const purgedValue = value.replaceAll('.', '').replaceAll(decimalSeparator, '.');
     return parseFloat(purgedValue);
   }
 
@@ -44,10 +40,10 @@ export default function CurrencyInput({
     if (setValue) {
       setValue(clean);
     }
-    console.log(formatValue(clean).length, value.length);
+    
+    //TODO: fix cursor shifting
     const cursorShift: number = ( formatValue(clean).length - value.length )
     const newCursorPosition = cursorShift > 0 ? cursorShift : 0;
-    console.log(newCursorPosition);232
     setCursorPosition(oldSelection);
   }
   
@@ -61,13 +57,11 @@ export default function CurrencyInput({
       document.activeElement === inputRef.current
       ) {
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
-        console.log('selection range: ', cursorPosition);
       }
   }, [rawValue, cursorPosition])
 
   return (
     <div className="relative flex items-center mb-4">
-    { rawValue }
       <input
         type="text"
         value={ formatValue(rawValue) }
@@ -77,7 +71,7 @@ export default function CurrencyInput({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
         onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyUp(e)} 
         className="h-10 w-full p-2 border border-neutral-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-      <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span>
+      { /* <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span> */ }
     </div>
   )
 }
