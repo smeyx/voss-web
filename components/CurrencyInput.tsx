@@ -18,7 +18,7 @@ export default function CurrencyInput({
   const [rawValue, setRawValue] = useState<number>(startValue);
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+  const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
   const formatValue = (value: number): string => {
     const formattedValue = formatter.format(value ? value : 0)
@@ -27,8 +27,19 @@ export default function CurrencyInput({
   
   const cleanValue = (value: string): number => {
     if(!value) return 0.0;
-    const purgedValue = value.replaceAll('.', '').replaceAll(decimalSeparator, '.');
-    return parseFloat(purgedValue);
+    const purgedValue: string = value.replaceAll('.', '').replaceAll(decimalSeparator, '.');
+    const [num, decimal = '00'] = purgedValue.split('.');
+    if(!num) return 0;
+
+    if(decimal && decimal.length > 2) {
+      console.log(cursorPosition);
+      const newPosition = cursorPosition - (decimal.length -2);
+      setCursorPosition(newPosition);
+      console.log(cursorPosition);
+    }
+
+    const decimalValue = parseFloat(`${num}.${decimal.slice(0, 2)}`);
+    return Number(decimalValue);
   }
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
