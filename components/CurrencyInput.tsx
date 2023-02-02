@@ -8,6 +8,7 @@ interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   setValue?: (value: number) => void
 }
 
+//TODO: cleanup
 export default function CurrencyInput({ 
   currency, 
   startValue = 0.0, 
@@ -32,10 +33,8 @@ export default function CurrencyInput({
     if(!num) return 0;
 
     if(decimal && decimal.length > 2) {
-      console.log(cursorPosition);
-      const newPosition = cursorPosition - (decimal.length -2);
-      setCursorPosition(newPosition);
-      console.log(cursorPosition);
+      // const newPosition = cursorPosition - (decimal.length -2);
+      // setCursorPosition(newPosition);
     }
 
     const decimalValue = parseFloat(`${num}.${decimal.slice(0, 2)}`);
@@ -54,8 +53,7 @@ export default function CurrencyInput({
     
     //TODO: fix cursor shifting
     const cursorShift: number = ( formatValue(clean).length - value.length )
-    const newCursorPosition = cursorShift > 0 ? cursorShift : 0;
-    setCursorPosition(oldSelection);
+    setCursorPosition(oldSelection + cursorShift);
   }
   
   const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {

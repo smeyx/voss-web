@@ -28,6 +28,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
+  const [ amountOfPositions, setAmountOfPositions ] = useState<number>(1);
   const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
   const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
@@ -38,7 +39,9 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log(event.currentTarget);
+    const form: HTMLFormElement = event.currentTarget;
+    const formData = new FormData(form);
+    console.log(formData);
   }
 
   return (
@@ -96,40 +99,70 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   { ['once', 'weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
-              <div className="col-span-full sm:col-span-4">
-                <label htmlFor="invoice_position_name">Position</label>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  name="invoice_position_name[]"
-                  autoComplete="off"
-                  className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-              </div>
-              <div className="col-span-full sm:col-span-2">
-                <label htmlFor="invoice_position_price">Price</label>
-                <CurrencyInput 
-                  currency={ currency }
-                  placeholder="Price"
-                  name="invoice_position_price[]"
-                  autoComplete="off"
-                  startValue={positionPrice}
-                  setValue={ setPositionPrice }
-                  />
-                { /*
-                // <div className="relative flex items-center mb-4">
-                //   <input
-                //     type="text"
-                //     value={ positionPrice }
-                //     placeholder="Price"
-                //     inputMode="numeric"
-                //     name="invoice_position_price[]"
-                //     autoComplete="off"
-                //     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
-                //     // onBlur={ (e: React.FocusEvent<HTMLInputElement>) => setPositionPrice(handlePriceChange(e.currentTarget.value)) }
-                //     className="h-10 w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-                //   <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-800">{ currency }</span>
+    { amountOfPositions && Array.from( amountOfPositions, (item, index) => (
+              <div className="col-span-full sm:col-span-6 sm:grid sm:grid-cols-10 sm:gap-4" key={index}>
+                <div className="col-span-full sm:col-span-7">
+                  <label htmlFor="invoice_position_name">Position</label>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    name="invoice_position_name[]"
+                    autoComplete="off"
+                    className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
                 </div>
-  */}
+                <div className="col-span-full sm:col-span-2">
+                  <label htmlFor="invoice_position_price">Price</label>
+                  <CurrencyInput
+                    currency={currency}
+                    placeholder="Price"
+                    name="invoice_position_price[]"
+                    autoComplete="off"
+                    startValue={positionPrice}
+                    setValue={setPositionPrice}
+                  />
+                </div>
+                <div className="col-span-full sm:col-span-1">
+                  <label htmlFor="invoice_position_price">Amount</label>
+                  <input
+                    type="number"
+                    placeholder="Amount"
+                    name="invoice_position_amount[]"
+                    value="1"
+                    className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+                </div>
+              </div>
+    ))
+    }
+              <div className="col-span-full sm:col-span-6 sm:grid sm:grid-cols-10 sm:gap-4">
+                <div className="col-span-full sm:col-span-7">
+                  <label htmlFor="invoice_position_name">Position</label>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    name="invoice_position_name[]"
+                    autoComplete="off"
+                    className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+                </div>
+                <div className="col-span-full sm:col-span-2">
+                  <label htmlFor="invoice_position_price">Price</label>
+                  <CurrencyInput
+                    currency={currency}
+                    placeholder="Price"
+                    name="invoice_position_price[]"
+                    autoComplete="off"
+                    startValue={positionPrice}
+                    setValue={setPositionPrice}
+                  />
+                </div>
+                <div className="col-span-full sm:col-span-1">
+                  <label htmlFor="invoice_position_price">Amount</label>
+                  <input
+                    type="number"
+                    placeholder="Amount"
+                    name="invoice_position_amount[]"
+                    value="1"
+                    className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+                </div>
               </div>
             </div>
             <div className="text-right">
