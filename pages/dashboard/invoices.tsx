@@ -5,10 +5,11 @@ import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import { protectedSsrPage } from '@lib/session'
 import { Plus, Minus } from 'phosphor-react';
+import CurrencyInput from '@components/CurrencyInput';
 import type { NextPage, GetServerSideProps } from 'next/types';
+import type { ReactElement } from 'react';
 import type { User } from '@models/user/';
 import type { Customer } from '@models/customer/';
-import CurrencyInput from '@components/CurrencyInput';
 
 interface PageProps {
   user: User,
@@ -23,6 +24,7 @@ interface CustomerResponse {
   count: number,
   customers: Customer[]
 }
+
 const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ createInvoice, setCreateInvoice] = useState<boolean>(false);
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
@@ -33,10 +35,12 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    // e.currentTarget.value = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR'}).format(parseFloat(price)) 
-    // setPositionPrice(price);
-  };
+  const generatePositionInputs = (): ReactElement[] => {
+     return [
+      <></>
+     ];
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const form: HTMLFormElement = event.currentTarget;
