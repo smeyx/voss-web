@@ -19,6 +19,8 @@ export default function CurrencyInput({
   const [rawValue, setRawValue] = useState<number>(startValue);
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // extract to config?
   const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
   const formatValue = (value: number): string => {
@@ -28,17 +30,39 @@ export default function CurrencyInput({
   
   const cleanValue = (value: string): number => {
     if(!value) return 0.0;
+    //TODO: groupSeparator as variable
     const purgedValue: string = value.replaceAll('.', '').replaceAll(decimalSeparator, '.');
-    const [num, decimal = '00'] = purgedValue.split('.');
-    if(!num) return 0;
 
-    if(decimal && decimal.length > 2) {
-      // const newPosition = cursorPosition - (decimal.length -2);
-      // setCursorPosition(newPosition);
+    // too much?
+    let integerPart: string = '';
+    let decimalPart: string = '';
+    const parts = (formatter.formatToParts(parseFloat(purgedValue)));
+    parts.map(p => {
+      switch(p.type) {
+        case 'integer': 
+          integerPart += p.value;
+          break;
+        case 'fraction':
+          decimalPart += p.value;
+          break;
+        // case 'currency':
+        //   break;
+        // case 'literal':
+        //   break;
+      }
+    });
+
+    // no 
+    if(!integerPart) return 0;
+
+    //why?
+    if(decimalPart && decimalPart.length >= 2) {
+      const newPosition = cursorPosition - (decimalPart.length -2);
+      setCursorPosition(newPosition);
     }
 
-    const decimalValue = parseFloat(`${num}.${decimal.slice(0, 2)}`);
-    return Number(decimalValue);
+    const preciseValue = parseFloat(`${integerPart}.${decimalPart.slice(0, 2)}`);
+    return preciseValue;
   }
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +76,8 @@ export default function CurrencyInput({
     }
     
     //TODO: fix cursor shifting
-    const cursorShift: number = ( formatValue(clean).length - value.length )
+    const shift: number = ( formatValue(clean).length - value.length )
+    const cursorShift = shift >= 0 ? shift : 0;
     setCursorPosition(oldSelection + cursorShift);
   }
   
@@ -60,11 +85,13 @@ export default function CurrencyInput({
   }
 
   useEffect(() => {
+    console.log(inputRef, inputRef.current, document.activeElement);
     if(
       inputRef &&
       inputRef.current &&
       document.activeElement === inputRef.current
       ) {
+        console.log(cursorPosition, new Date());
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
   }, [rawValue, cursorPosition])
@@ -79,8 +106,8 @@ export default function CurrencyInput({
         inputMode="numeric"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
         onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyUp(e)} 
-        className="h-10 w-full p-2 border border-neutral-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-      { /* <span className="absolute w-1/6 text-center right-0 p-2 w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span> */ }
+        className="w-full h-10 p-2 border rounded border-neutral-200 focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+      { /* <span className="absolute right-0 w-1/6 p-2 text-center w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span> */ }
     </div>
   )
 }
