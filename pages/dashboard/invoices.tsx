@@ -66,6 +66,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
               type="number"
               placeholder="Amount"
               name="invoice_position_amount[]"
+              defaultValue="1"
               value="1"
               className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
           </div>

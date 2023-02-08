@@ -85,7 +85,6 @@ export default function CurrencyInput({
   }
 
   useEffect(() => {
-    console.log(inputRef, inputRef.current, document.activeElement);
     if(
       inputRef &&
       inputRef.current &&
@@ -94,7 +93,7 @@ export default function CurrencyInput({
         console.log(cursorPosition, new Date());
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
-  }, [rawValue, cursorPosition])
+  }, [rawValue, cursorPosition, inputRef])
 
   return (
     <div className="relative flex items-center mb-4">
