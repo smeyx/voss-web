@@ -18,6 +18,9 @@ export default function CurrencyInput({
 }: CurrencyInputProps): ReactElement {
   const [rawValue, setRawValue] = useState<number>(startValue);
   const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const [change, setChange] = useState<boolean>(false);
+  const [lastInput, setLastInput] = useState<string | null>(null);
+  const [groupSeparator, setGroupSeparator] = useState<string>('.');
   const inputRef = useRef<HTMLInputElement>(null);
 
   // extract to config?
@@ -29,9 +32,13 @@ export default function CurrencyInput({
   };
   
   const cleanValue = (value: string): number => {
+    setChange(true);
     if(!value) return 0.0;
-    //TODO: groupSeparator as variable
-    const purgedValue: string = value.replaceAll('.', '').replaceAll(decimalSeparator, '.');
+    
+    const replaceSeparators = new RegExp('[^\\w' + decimalSeparator + ']', 'g');
+    const purgedValue: string = value
+      .replaceAll(replaceSeparators, '')
+      .replaceAll(decimalSeparator, '.');
 
     // too much?
     let integerPart: string = '';
@@ -44,6 +51,9 @@ export default function CurrencyInput({
           break;
         case 'fraction':
           decimalPart += p.value;
+          break;
+        case 'group':
+          setGroupSeparator(p.value); 
           break;
         // case 'currency':
         //   break;
@@ -79,9 +89,16 @@ export default function CurrencyInput({
     const shift: number = ( formatValue(clean).length - value.length )
     const cursorShift = shift >= 0 ? shift : 0;
     setCursorPosition(oldSelection + cursorShift);
+
+    console.log(value, value[cursorPosition], cursorPosition, oldSelection + cursorShift);
+    if(lastInput === 'Backspace' && value[oldSelection + cursorShift] === groupSeparator) {
+      console.log('touched a separator')
+    }
   }
   
-  const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key } = e
+    setLastInput(key);
   }
 
   useEffect(() => {
@@ -93,7 +110,7 @@ export default function CurrencyInput({
         console.log(cursorPosition, new Date());
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
-  }, [rawValue, cursorPosition, inputRef])
+  }, [rawValue, cursorPosition, inputRef, change])
 
   return (
     <div className="relative flex items-center mb-4">
@@ -104,7 +121,7 @@ export default function CurrencyInput({
         ref={ inputRef }
         inputMode="numeric"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
-        onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyUp(e)} 
+        onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e)} 
         className="w-full h-10 p-2 border rounded border-neutral-200 focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
       { /* <span className="absolute right-0 w-1/6 p-2 text-center w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span> */ }
     </div>
