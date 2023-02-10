@@ -8,6 +8,21 @@ interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   setValue?: (value: number) => void
 }
 
+// extract to config?
+const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2, minimumFractionDigits: 2 });
+
+const formatValue = (value: number): string => {
+  const formattedValue = formatter.format(value ? value : 0)
+  return formattedValue;
+};
+
+const moveCursor = (
+  formattedValue: string, 
+  selectionStart: number | null) => {
+  
+  console.log('moveCursor')
+}
+
 //TODO: cleanup
 export default function CurrencyInput({ 
   currency, 
@@ -17,22 +32,14 @@ export default function CurrencyInput({
   ...props 
 }: CurrencyInputProps): ReactElement {
   const [rawValue, setRawValue] = useState<number>(startValue);
+  const [formattedValue, setFormattedValue] = useState<string>(formatValue(startValue));
   const [cursorPosition, setCursorPosition] = useState<number>(0);
-  const [change, setChange] = useState<boolean>(false);
   const [lastInput, setLastInput] = useState<string | null>(null);
   const [groupSeparator, setGroupSeparator] = useState<string>('.');
+  const [changes, setChanges] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // extract to config?
-  const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2, minimumFractionDigits: 2 });
-
-  const formatValue = (value: number): string => {
-    const formattedValue = formatter.format(value ? value : 0)
-    return formattedValue;
-  };
-  
   const cleanValue = (value: string): number => {
-    setChange(true);
     if(!value) return 0.0;
     
     const replaceSeparators = new RegExp('[^\\w' + decimalSeparator + ']', 'g');
@@ -65,10 +72,10 @@ export default function CurrencyInput({
     // no 
     if(!integerPart) return 0;
 
-    //why?
+    ////why?
     if(decimalPart && decimalPart.length >= 2) {
-      const newPosition = cursorPosition - (decimalPart.length -2);
-      setCursorPosition(newPosition);
+      // const newPosition = cursorPosition - (decimalPart.length -2);
+      // setCursorPosition(newPosition);
     }
 
     const preciseValue = parseFloat(`${integerPart}.${decimalPart.slice(0, 2)}`);
@@ -76,8 +83,7 @@ export default function CurrencyInput({
   }
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-    const oldSelection: number = e.currentTarget.selectionStart || 0;
+    const { value, selectionStart } = e.currentTarget;
 
     const clean: number = cleanValue(value);
     setRawValue(clean);
@@ -85,19 +91,32 @@ export default function CurrencyInput({
       setValue(clean);
     }
     
+    const formatted = formatValue(clean);
+    setFormattedValue(formatted);
+    console.log(value, formatted);
+    
     //TODO: fix cursor shifting
-    const shift: number = ( formatValue(clean).length - value.length )
-    const cursorShift = shift >= 0 ? shift : 0;
-    setCursorPosition(oldSelection + cursorShift);
 
-    console.log(value, value[cursorPosition], cursorPosition, oldSelection + cursorShift);
-    if(lastInput === 'Backspace' && value[oldSelection + cursorShift] === groupSeparator) {
-      console.log('touched a separator')
+    setChanges(changes + 1)
+    console.log(formatted.charAt(selectionStart))
+    if(lastInput === 'Backspace' && formatted.charAt(cursorPosition) === groupSeparator) {
+      console.log('separator!')
+      setCursorPosition(cursorPosition - 1)
+    } else {
+      const shift: number = (formatted.length - value.length)
+      const cursorShift = shift >= 0 ? shift : 0;
+      console.log(cursorShift)
+      setCursorPosition(oldSelection + cursorShift);
     }
+    
   }
   
+  const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key } = e;
+    setLastInput(key);
+  }
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { key } = e
+    const { key } = e;
     setLastInput(key);
   }
 
@@ -107,21 +126,22 @@ export default function CurrencyInput({
       inputRef.current &&
       document.activeElement === inputRef.current
       ) {
-        console.log(cursorPosition, new Date());
+        console.log('moved cursor')
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
-  }, [rawValue, cursorPosition, inputRef, change])
+  }, [rawValue, formattedValue, cursorPosition, inputRef, changes])
 
   return (
     <div className="relative flex items-center mb-4">
       <input
         type="text"
-        value={ formatValue(rawValue) }
+        value={ formattedValue }
         {...props}
         ref={ inputRef }
         inputMode="numeric"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e)}
-        onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e)} 
+        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => handlePriceChange(e) }
+        onKeyUp={ (e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e) } 
+        onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyUp(e) }
         className="w-full h-10 p-2 border rounded border-neutral-200 focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
       { /* <span className="absolute right-0 w-1/6 p-2 text-center w-h-10 rounded-r-md bg-neutral-200 dark:bg-neutral-900">{currency}</span> */ }
     </div>
