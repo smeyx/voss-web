@@ -86,29 +86,31 @@ export default function CurrencyInput({
     const { value, selectionStart } = e.currentTarget;
 
     const clean: number = cleanValue(value);
-    setRawValue(clean);
-    if (setValue) {
-      setValue(clean);
-    }
-    
-    const formatted = formatValue(clean);
-    setFormattedValue(formatted);
-    console.log(value, formatted);
-    
-    //TODO: fix cursor shifting
+    if (rawValue != clean) {
+      setRawValue(clean);
+      if (setValue) {
+        setValue(clean);
+      }
 
-    setChanges(changes + 1)
-    console.log(formatted.charAt(selectionStart))
-    if(lastInput === 'Backspace' && formatted.charAt(cursorPosition) === groupSeparator) {
-      console.log('separator!')
-      setCursorPosition(cursorPosition - 1)
-    } else {
-      const shift: number = (formatted.length - value.length)
-      const cursorShift = shift >= 0 ? shift : 0;
-      console.log(cursorShift)
-      setCursorPosition(oldSelection + cursorShift);
+      const formatted = formatValue(clean);
+      setFormattedValue(formatted);
+      console.log(value, formatted);
+
+      //TODO: fix cursor shifting
+      if (selectionStart) {
+        const shift: number = (formatted.length - value.length)
+        const cursorShift = shift >= 0 ? shift : 0;
+        console.log(cursorShift)
+        // if the deletion affects group separator skip cursor
+        if (lastInput === 'Backspace' && formatted.charAt(selectionStart) === groupSeparator) {
+          console.log('separator!')
+          console.log(cursorPosition)
+          setCursorPosition(selectionStart - 1);
+        } else {
+          setCursorPosition(selectionStart + cursorShift);
+        }
+      }
     }
-    
   }
   
   const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -126,7 +128,7 @@ export default function CurrencyInput({
       inputRef.current &&
       document.activeElement === inputRef.current
       ) {
-        console.log('moved cursor')
+        console.log('moved cursor', cursorPosition)
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
   }, [rawValue, formattedValue, cursorPosition, inputRef, changes])
