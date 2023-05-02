@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import useSwr from 'swr';
 import Dashboard from '@components/Dashboard/';
 import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import { protectedSsrPage } from '@lib/session'
 import { Plus, Minus } from 'phosphor-react';
-import CurrencyInput from '@components/CurrencyInput';
+import PositionInput from '@components/Dashboard/Invoices/PositionInput';
 import type { NextPage, GetServerSideProps } from 'next/types';
-import type { ReactElement } from 'react';
 import type { User } from '@models/user/';
 import type { Customer } from '@models/customer/';
 
@@ -30,54 +29,17 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
-  const [ amountOfPositions, setAmountOfPositions ] = useState<number>(19);
   const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
+  const [ positions, setPositions ] = useState<JSX.Element[]>([])
   const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
-  //TODO: extract?
-  const generatePositionInputs = (): ReactElement[] => {
-    const elements: ReactElement[] = [];
-    for(let i = 1; i <= amountOfPositions; i++) {
-      elements.push(
-        <div className="col-span-full sm:col-span-6 sm:grid sm:grid-cols-10 sm:gap-4" key={i}>
-          <div className="col-span-full sm:col-span-7">
-            <label htmlFor="invoice_position_name">Position</label>
-            <input
-              type="text"
-              placeholder="Name"
-              name="invoice_position_name[]"
-              autoComplete="off"
-              className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-          </div>
-          <div className="col-span-full sm:col-span-2">
-            <label htmlFor="invoice_position_price">Price</label>
-            <CurrencyInput
-              currency={currency}
-              placeholder="Price"
-              name="invoice_position_price[]"
-              autoComplete="off"
-              startValue={positionPrice}
-            />
-          </div>
-          <div className="col-span-full sm:col-span-1">
-            <label htmlFor="invoice_position_price">Amount</label>
-            <input
-              type="number"
-              placeholder="Amount"
-              name="invoice_position_amount[]"
-              defaultValue="1"
-              value="1"
-              className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
-          </div>
-        </div>
-      )
-    }
-
-    return elements;
+  const handlePositionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
   }
+  //TODO: extract?
+  if(positions.length === 0) positions.push(<PositionInput onHandleChange={ handlePositionChange }/>)
 
-  const positions: ReactElement[] = generatePositionInputs();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -92,7 +54,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         <nav>
           <Button 
             onClick={ () => setCreateInvoice(!createInvoice) } 
-            className="flex items-center px-4 py-2 font-bold text-white dark:text-neutral-900 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
+            className="font-bold">
             { !createInvoice ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
             New invoice
           </Button>
@@ -146,10 +108,10 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
             <div className="text-right">
               <Button
                 type="button"
-                className="items-center w-full px-4 py-2 font-bold text-white sm:w-auto sm:inline-flex sm:mr-4 dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Cancel</Button>
+                className="w-full font-bold sm:w-auto sm:inline-flex sm:mr-4">Cancel</Button>
               <Button
                 type="submit"
-                className="items-center w-full px-4 py-2 mt-4 font-bold text-white sm:mt-0 sm:w-auto sm:inline-flex dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Save</Button>
+                className="w-full mt-4 font-bold sm:mt-0 sm:w-auto sm:inline-flex">Save</Button>
             </div>
           </form>
         </div>

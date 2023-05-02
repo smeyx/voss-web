@@ -19,8 +19,6 @@ const formatValue = (value: number): string => {
 const moveCursor = (
   formattedValue: string, 
   selectionStart: number | null) => {
-  
-  console.log('moveCursor')
 }
 
 //TODO: cleanup
@@ -94,17 +92,13 @@ export default function CurrencyInput({
 
       const formatted = formatValue(clean);
       setFormattedValue(formatted);
-      console.log(value, formatted);
 
       //TODO: fix cursor shifting
       if (selectionStart) {
         const shift: number = (formatted.length - value.length)
         const cursorShift = shift >= 0 ? shift : 0;
-        console.log(cursorShift)
         // if the deletion affects group separator skip cursor
         if (lastInput === 'Backspace' && formatted.charAt(selectionStart) === groupSeparator) {
-          console.log('separator!')
-          console.log(cursorPosition)
           setCursorPosition(selectionStart - 1);
         } else {
           setCursorPosition(selectionStart + cursorShift);
@@ -128,7 +122,6 @@ export default function CurrencyInput({
       inputRef.current &&
       document.activeElement === inputRef.current
       ) {
-        console.log('moved cursor', cursorPosition)
         inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
       }
   }, [rawValue, formattedValue, cursorPosition, inputRef, changes])
