@@ -30,15 +30,20 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
   const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
-  const [ positions, setPositions ] = useState<JSX.Element[]>([])
+  const [ positions, setPositions ] = useState<JSX.Element[]>(new Array())
   const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
+  const addPosition = () => {
+    const position = <PositionInput positionId={positions.length + 1} key={ positions.length + 1 } onHandleChange={ handlePositionChange } />;
+    setPositions([...positions, position]);
+  }
+
   const handlePositionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    console.log(e.target);
   }
   //TODO: extract?
-  if(positions.length === 0) positions.push(<PositionInput onHandleChange={ handlePositionChange }/>)
+  if(positions.length === 0) addPosition();
 
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -70,7 +75,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 <label htmlFor="invoice_customer" className="block">Customer</label>
                 <select 
                   name="invoice_customer" 
-                  onChange={ (e: React.ChangeEvent<HTMLSelectElement>) => setInvoiceCustomerId(e.target.value)}
+                  // onChange={ (e: React.ChangeEvent<HTMLSelectElement>) => setInvoiceCustomerId(e.target.value)}
                   className="w-full h-10 px-4 py-2 mb-4 sm:w-auto bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-900">
                   {response?.data.customers && response.data.customers.map((c: Customer) => (<option value={c.id} key={c.id}>{c.name}</option>))}
                 </select>
@@ -81,8 +86,8 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   placeholder="Name"
                   id="invoice_name"
                   required
-                  value={invoiceName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceName(e.target.value) }}
+                  // value={invoiceName}
+                  // onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceName(e.target.value) }}
                   className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
               <div className="col-span-full sm:col-span-3">
@@ -103,9 +108,16 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   { ['once', 'weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
-              { positions && positions.map( p => <>{ p }</>) }
+              { positions && positions.map( p => p) }
+              <div className="col-span-full text-right">
+                <Button 
+                  className="font-bold sm:w-auto sm:inline-flex"
+                  onClick={ () => addPosition() }
+                  type="button"
+                  >Add position</Button>
+              </div>
             </div>
-            <div className="text-right">
+            <div className="text-right mt-4">
               <Button
                 type="button"
                 className="w-full font-bold sm:w-auto sm:inline-flex sm:mr-4">Cancel</Button>
