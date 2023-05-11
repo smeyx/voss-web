@@ -62,14 +62,14 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
             value={password}
             onChange={handlePasswordChange}
             className="w-full p-2 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:bg-neutral-600 dark:border-neutral-800 dark:text-white dark:outline-secondary-500" />
-          <Button type="button"
+          <button type="button"
             title={ `${ passwordVisibility ? 'Hide' : 'Show'} password`}
-            className="absolute right-0 inset-y-1 flex items-center mr-2 dark:text-white"
+            className="absolute mr-2 h-full right-0 flex items-center bg-transparent dark:text-white"
             onClick={() => setPasswordVisibility(!passwordVisibility)}
           >
 
             { showPasswordButton }
-          </Button>
+          </button>
         </div>
         {errorResponse &&
           <ErrorMessage errorMessage={errorResponse} />
@@ -81,8 +81,8 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
             type="submit">
             {children || 'Login'}
           </Button>
-          <Link className="flex-1 w-5/12 text-center hover:text-primary-900" href={pathname === '/login' ? '/register' : '/login'}>
-            <Button className="w-full h-full p-2 font-bold bg-transparent text-primary-500 hover:text-primary-600 dark:text-secondary-500 dark:hover:text-secondary-600">
+          <Link className="ml-2 flex-1 text-center hover:text-primary-900" href={pathname === '/login' ? '/register' : '/login'}>
+            <Button className="w-full h-full p-2 font-bold">
               {pathname === '/login' ? 'Register' : 'Sign in'}
             </Button>
           </Link>

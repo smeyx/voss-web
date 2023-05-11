@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react';
+import Button from '@components/Button';
 import CurrencyInput from '@components/CurrencyInput';
 
 interface PositionInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -11,8 +12,8 @@ interface PositionInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 const PositionInput: React.FC<PositionInputProps> = ({ currency = '€', onHandleChange, positionId }): JSX.Element => {
   const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
   return (
-    <div className="col-span-full sm:col-span-6 sm:grid sm:grid-cols-10 sm:gap-4">
-      <div className="col-span-full sm:col-span-7">
+    <div className="col-span-full sm:col-span-5 sm:grid sm:grid-cols-10 sm:gap-4">
+      <div className="col-span-full sm:col-span-8">
         <label htmlFor="invoice_position_name">Position</label>
         <input
           id={ `position-name-${positionId}` }
@@ -46,6 +47,11 @@ const PositionInput: React.FC<PositionInputProps> = ({ currency = '€', onHandl
           name="invoice_position_amount[]"
           className="h-10 w-full p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white"
         />
+      </div>
+      <div className="col-span-full sm:col-span-1">
+        <Button
+          type="button"
+        >X</Button>
       </div>
     </div>
   )

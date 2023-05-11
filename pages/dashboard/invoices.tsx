@@ -50,7 +50,8 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     event.preventDefault();
     const form: HTMLFormElement = event.currentTarget;
     const formData = new FormData(form);
-    console.log(formData);
+    //loop throug formdata to validate inputs
+    formData.forEach((e, k) => console.log(k, e));
   }
 
   return (
@@ -108,7 +109,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   { ['once', 'weekly', 'monthly', 'yearly'].map(w => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
-              { positions && positions.map( p => p) }
+              { positions && positions.map( (p, i) => p) }
               <div className="col-span-full text-right">
                 <Button 
                   className="font-bold sm:w-auto sm:inline-flex"
