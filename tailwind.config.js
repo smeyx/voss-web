@@ -40,6 +40,7 @@ module.exports = {
       'red': colors.red,
       'neutral': colors.neutral,
       'dark': '#141414',
+      'transparent': colors.transparent,
     },
   },
   variants: {

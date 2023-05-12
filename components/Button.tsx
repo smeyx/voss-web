@@ -22,7 +22,7 @@ export default function Button({ children, loading, success, ...props }: ButtonP
         innerButton = confirmationState;
     }
 
-    const buttonClass: string = `h-12 flex-1 px-4 py-2 text-white border-2 rounded bg-primary-500 
+    const buttonClass: string = `flex-1 px-4 py-2 text-white border-2 rounded bg-primary-500 
     border-primary-500 hover:border-primary-600 hover:bg-primary-600 transition-colors 
     dark:text-neutral-800 dark:bg-secondary-500 dark:border-secondary-500 dark:hover:border-secondary-600 
     dark:hover:bg-secondary-600`;

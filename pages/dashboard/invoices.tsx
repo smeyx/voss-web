@@ -26,12 +26,11 @@ interface CustomerResponse {
 
 const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ createInvoice, setCreateInvoice] = useState<boolean>(false);
-  const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
-  const [ invoiceName, setInvoiceName ] = useState<string>('');
+  // const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
+  // const [ invoiceName, setInvoiceName ] = useState<string>('');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
-  const [ positionPrice, setPositionPrice ] = useState<number>(0.0);
   const [ positions, setPositions ] = useState<JSX.Element[]>(new Array())
-  const [ currency, setCurrency ] = useState<string>('€');
+  // const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
   const addPosition = () => {
@@ -46,12 +45,25 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   if(positions.length === 0) addPosition();
 
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const form: HTMLFormElement = event.currentTarget;
     const formData = new FormData(form);
     //loop throug formdata to validate inputs
-    formData.forEach((e, k) => console.log(k, e));
+    try {
+      const response: { success: boolean } = await fetchJSON('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.success) {
+        console.log(response);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -101,7 +113,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceDate(new Date(e.target.value)) }}
                   className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
-              <div className="col-span-full sm:col-span-3">
+              <div className="col-span-full sm:col-span-3 mb-10">
                 <label htmlFor="invoice_date_repeat" className="block">Schedule</label>
                 <select
                   name="invoice_date_schedule"
