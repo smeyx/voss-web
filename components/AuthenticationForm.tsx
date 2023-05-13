@@ -35,9 +35,9 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
   }
 
   return (
-    <div className="flex flex-col items-center max-w-lg p-6 mx-auto md:mt-20 bg-white border border-gray-200 rounded-xl dark:border-neutral-800 dark:bg-neutral-700 shadow-md dark:shadow-none">
+    <div className="flex flex-col items-center max-w-lg p-6 mt-10 mx-auto md:mt-20 bg-white border border-gray-200 rounded-xl dark:border-neutral-800 dark:bg-neutral-700 shadow-md dark:shadow-none">
       <h1 className="text-3xl pb-8 dark:text-white">
-        {`${(pathname === '/login' ? 'Login' : 'Welcome')} to VOSS.`}
+        {`${(pathname === '/login' ? 'Sign in' : 'Welcome')} to VOSS.`}
       </h1>
       <form className="flex flex-col flex-1 gap-2 w-full" onSubmit={onSubmit}>
         <label className="font-bold dark:text-white" htmlFor="email">E-Mail</label>
@@ -78,11 +78,12 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
           <Button 
             loading={ authInProgress }
             success={ authSuccess }
-            type="submit">
-            {children || 'Login'}
+            type="submit"
+            className="font-bold">
+            {children || 'Sign in'}
           </Button>
           <Link className="ml-2 flex-1 text-center hover:text-primary-900" href={pathname === '/login' ? '/register' : '/login'}>
-            <Button className="w-full h-full p-2 font-bold">
+            <Button className="w-full h-full p-2">
               {pathname === '/login' ? 'Register' : 'Sign in'}
             </Button>
           </Link>

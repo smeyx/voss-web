@@ -1,13 +1,14 @@
 import knex from '@lib/db';
 import { findById, pagination } from '@models/helpers';
-import type { Customer, DbCustomer } from './customer.types';
+import type { DbInvoice, DbPosition } from './invoice.types';
 
-interface PaginationCustomerListResponse {
+interface PaginationResponse {
   count: number | string,
-  customers: Customer[],
+  invoices: DbInvoice[],
 }
+
 export class CustomerModel {
-  async find(user_id: number, offset?: number, limit?: number, id?: number): Promise<PaginationCustomerListResponse> {
+  async find(user_id: number, offset?: number, limit?: number, id?: number): Promise<PaginationResponse> {
 
     const [customers, count] = await Promise.all([
       knex('customers')
@@ -28,7 +29,7 @@ export class CustomerModel {
     ]);
 
     //TODO: ugly typing because database
-    const response: Customer[] = customers.reduce((acc: Customer[], customer: DbCustomer
+    const newCustomers: Customer[] = customers.reduce((acc: Customer[], customer: DbCustomer
       ) => {
       acc.push({
         id: customer.id,
@@ -47,7 +48,7 @@ export class CustomerModel {
 
     //TODO: sleek? no.
     const respCount = Object.values(count[0]).pop();
-    return { count: respCount, customers: response };
+    return { count: respCount, customers: newCustomers };
   }
 
   async addCustomer(customer: Customer, user_id: number) {

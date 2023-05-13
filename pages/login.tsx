@@ -58,8 +58,8 @@ const LoginPage:NextPage = () => {
   };
 
   return (
-    <div className="container mx-auto text-gray-800">
-      <AuthenticationForm authInProgress={ authInProgress } authSuccess={ authSuccess } onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Login</AuthenticationForm>
+    <div className="container mx-auto text-gray-800 px-4">
+      <AuthenticationForm authInProgress={ authInProgress } authSuccess={ authSuccess } onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Sign in</AuthenticationForm>
     </div>
   );
 }

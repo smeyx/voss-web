@@ -10,6 +10,7 @@ exports.up = function(knex) {
       table.string('street').notNullable();
       table.string('housenumber').notNullable();
       table.string('city').notNullable();
+      table.string('state').nullable();
       table.string('postalcode').notNullable();
       table.integer('customer_id').notNullable();
       table.datetime('time_created', { useTz: true }).notNullable();

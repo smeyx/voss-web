@@ -8,9 +8,15 @@ exports.up = function(knex) {
     .createTable('users', table => {
       table.increments('id').unsigned();
       table.string('email').notNullable().unique();
+      table.text('password');
+      table.string('name').nullable();
+      table.string('street').nullable();
+      table.string('city').nullable();
+      table.string('state').nullable();
+      table.string('postcode').nullable();
+      table.string('phone').nullable();
       table.datetime('time_created', { useTz: true }).notNullable();
       table.datetime('time_updated', { useTz: true }).notNullable();
-      table.text('password');
     });
 };
 

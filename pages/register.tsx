@@ -40,7 +40,7 @@ const RegisterPage:NextPage = () => {
   };
 
   return (
-    <div className="container mx-auto text-gray-800">
+    <div className="container mx-auto text-gray-800 px-4">
         <AuthenticationForm onSubmit={ handleSubmitRegister } { ...extraProps }>Register</AuthenticationForm>
     </div>
   );

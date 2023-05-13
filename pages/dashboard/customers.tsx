@@ -69,14 +69,14 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   return (
     <Dashboard user={ user } activeTab={ 'customers' }>
       <>
-        <nav>
+        <aside>
           <Button 
             onClick={ () => setCreateCustomer(!createCustomer) } 
-            className="flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
-            { !createCustomer ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
-            New customer
+            className="flex items-center px-4 py-2 text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
+            { !createCustomer ? <Plus size="16" className="mr-1" /> : <Minus size="16" className="mr-1" /> }
+            Create customer
           </Button>
-        </nav>
+        </aside>
         { /*TODO: make it beautiful and extract it*/ }
           { !response && Loading}
           { !createCustomer && response && response.success === true && (

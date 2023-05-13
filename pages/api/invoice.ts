@@ -1,6 +1,5 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
-import type { User } from '@models/user';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 async function invoiceRoute(req: NextApiRequest, res: NextApiResponse) {
@@ -14,7 +13,8 @@ async function invoiceRoute(req: NextApiRequest, res: NextApiResponse) {
       break;
     case 'POST':
       try {
-          console.log(req);
+        console.log(req.body);
+        res.status(200).json({ success: false });
       } catch (e) {
         console.log(e);
         res.status(200).json({ success: false });

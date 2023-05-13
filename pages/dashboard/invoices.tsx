@@ -28,37 +28,38 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ createInvoice, setCreateInvoice] = useState<boolean>(false);
   // const [ invoiceCustomerId, setInvoiceCustomerId ] = useState<string>('');
   // const [ invoiceName, setInvoiceName ] = useState<string>('');
+  // const [ currency, setCurrency ] = useState<string>('€');
   const [ invoiceDate, setInvoiceDate ] = useState<Date>(new Date());
   const [ positions, setPositions ] = useState<JSX.Element[]>(new Array())
-  // const [ currency, setCurrency ] = useState<string>('€');
   const { data: response } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }`, fetchJSON);
   
   const addPosition = () => {
-    const position = <PositionInput positionId={positions.length + 1} key={ positions.length + 1 } onHandleChange={ handlePositionChange } />;
+    const position = <PositionInput key={ positions.length + 1 } />;
     setPositions([...positions, position]);
   }
 
-  const handlePositionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
-  }
   //TODO: extract?
   if(positions.length === 0) addPosition();
 
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const form: HTMLFormElement = event.currentTarget;
     const formData = new FormData(form);
-    //loop throug formdata to validate inputs
+    formData.append('user_id', user.id.toString());
+    //TODO: loop throug formdata to validate inputs
+
     try {
       const response: { success: boolean } = await fetchJSON('/api/invoice', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(Object.fromEntries(formData)),
       });
 
       if (response.success) {
         console.log(response);
+      } else {
+        throw new Error('Request unsuccessful.')
       }
 
     } catch (e) {
@@ -69,16 +70,15 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   return (
     <Dashboard user={ user } activeTab={ 'invoices' }>
       <>
-        <nav>
+        <aside>
           <Button 
             onClick={ () => setCreateInvoice(!createInvoice) } 
-            className="font-bold">
-            { !createInvoice ? <Plus size="16" className="mr-1" weight="bold" /> : <Minus size="16" className="mr-1" weight="bold" /> }
-            New invoice
+            >
+            { !createInvoice ? <Plus size="16" className="mr-1" /> : <Minus size="16" className="mr-1" /> }
+            Create invoice
           </Button>
-        </nav>
+        </aside>
         <br />
-        <div>{ 'this is the invoices view' }</div>
         <div className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-800 dark:border-neutral-900" >
           <h1 className="text-lg font-bold">Create a new invoice</h1>
           <form className="flex flex-col flex-1 mt-4 gap-2"
@@ -94,13 +94,21 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 </select>
               </div>
               <div className="col-span-full">
-                <label htmlFor="invoice_customer" className="block">Invoice Name</label>
+                <label htmlFor="invoice_name" className="block">Invoice Name</label>
                 <input type="text"
-                  placeholder="Name"
+                  placeholder="The name of this invoice in our system."
                   id="invoice_name"
+                  name="invoice_name"
                   required
-                  // value={invoiceName}
-                  // onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceName(e.target.value) }}
+                  className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
+              </div>
+              <div className="col-span-full">
+                <label htmlFor="invoice_title" className="block">Invoice Title</label>
+                <input type="text"
+                  placeholder="This title will show in your invoice."
+                  id="invoice_title"
+                  name="invoice_title"
+                  required
                   className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
               <div className="col-span-full sm:col-span-3">
@@ -108,8 +116,9 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 <input type="date"
                   placeholder="Date"
                   id="invoice_date"
+                  name="invoice_date"
+                  defaultValue={ new Date().toISOString().substring(0, 10) }
                   required
-                  value={ invoiceDate.toISOString().substring(0, 10)}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInvoiceDate(new Date(e.target.value)) }}
                   className="w-full h-10 p-2 mb-4 border border-gray-200 rounded focus:outline outline-1 outline-primary-500 dark:outline-secondary-500 dark:bg-neutral-600 dark:border-neutral-900 dark:text-white" />
               </div>
@@ -122,9 +131,9 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 </select>
               </div>
               { positions && positions.map( (p, i) => p) }
-              <div className="col-span-full text-right">
+              <div className="col-span-full text-right mb-10">
                 <Button 
-                  className="font-bold sm:w-auto sm:inline-flex"
+                  className="w-full sm:w-auto sm:inline-flex"
                   onClick={ () => addPosition() }
                   type="button"
                   >Add position</Button>
@@ -133,10 +142,10 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
             <div className="text-right mt-4">
               <Button
                 type="button"
-                className="w-full font-bold sm:w-auto sm:inline-flex sm:mr-4">Cancel</Button>
+                className="w-full sm:w-auto sm:inline-flex sm:mr-4">Cancel</Button>
               <Button
                 type="submit"
-                className="w-full mt-4 font-bold sm:mt-0 sm:w-auto sm:inline-flex">Save</Button>
+                className="w-full mt-4 sm:mt-0 sm:w-auto sm:inline-flex">Save</Button>
             </div>
           </form>
         </div>
