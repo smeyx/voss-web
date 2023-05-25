@@ -11,6 +11,8 @@ export type extraProps = {
 
 const RegisterPage:NextPage = () => {
   const [extraProps, setExtraProps] = useState<extraProps>();
+  const [ authInProgress, setAuthInProgress ] = useState<boolean>(false);
+  const [ authSuccess, setAuthSuccess ] = useState<boolean>(false);
   const router = useRouter();
 
   const handleSubmitRegister = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,6 +21,8 @@ const RegisterPage:NextPage = () => {
     try { 
       const email = event.currentTarget.email.value;
       const password = event.currentTarget.password.value
+      
+      setAuthInProgress(true);
       const { success, code, message } = await fetchJSON<RegistrationResponse>('/api/register', {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
@@ -30,7 +34,7 @@ const RegisterPage:NextPage = () => {
           setExtraProps({ errorResponse: message});
         }
       } else {
-        alert('successful register');
+        setAuthSuccess(true);
         router.push(`/login?email=${ email }`);
       }
 
@@ -41,7 +45,14 @@ const RegisterPage:NextPage = () => {
 
   return (
     <div className="container mx-auto text-gray-800 px-4">
-        <AuthenticationForm onSubmit={ handleSubmitRegister } { ...extraProps }>Register</AuthenticationForm>
+      <AuthenticationForm
+        authInProgress={authInProgress}
+        authSuccess={authSuccess}
+        onSubmit={handleSubmitRegister}
+        {...extraProps}
+      >
+        Register
+      </AuthenticationForm>
     </div>
   );
 }

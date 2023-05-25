@@ -11,7 +11,7 @@ interface PageProps {
 const Overview: NextPage<PageProps> = ({ user }) => {
 
   return (
-    <Dashboard user={ user } activeTab={ 'overview' }>
+    <Dashboard title="Overview" user={ user } activeTab={ 'overview' }>
       <span>{ 'this is a overview' }</span>
     </Dashboard>
   );

@@ -23,7 +23,7 @@ const SubNavLink: React.FC<SubNavLinkProps> = ({ active, text, path }): JSX.Elem
   return (
     <Link
       href={ path }
-      className={['flex-initial shrink-0', (active && 'border-b-2 border-primary-500 dark:border-secondary-600')].join(" ")}>
+      className={['no-underline flex-initial shrink-0', (active && 'border-b-2 border-primary-500 dark:border-secondary-600')].join(" ")}>
       <button className={[aStyles, active && activeStyles].join(" ")}>
         { text }
       </button>
@@ -34,7 +34,7 @@ const SubNavLink: React.FC<SubNavLinkProps> = ({ active, text, path }): JSX.Elem
 //TODO: extract tabs into components
 const SubNav: React.FC<SubNavProps> = ({ activeTab, links }): JSX.Element => {
   return (
-    <div className="flex flex-col w-full mx-auto mb-10 mt-2 border-b border-neutral-200 dark:border-neutral-600 sticky top-0 bg-neutral-50 dark:bg-neutral-900">
+    <div className="flex flex-col w-full mx-auto mb-5 mt-2 border-b border-neutral-200 dark:border-neutral-600 sticky top-0 bg-neutral-50 dark:bg-neutral-900">
       <nav className="flex justify-between sm:items-stretch sm:justify-start gap-4 px-4">
         {links.map((link, i) => (<SubNavLink key={i} active={activeTab === link.name.toLowerCase()} text={link.name} path={link.path} />))}
       </nav>

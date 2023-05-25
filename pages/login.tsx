@@ -49,7 +49,7 @@ const LoginPage:NextPage = () => {
       if(response && response.success === true) {
         setAuthSuccess(true);
         mutateUser(response.user);
-        router.push('/dashboard/overview');
+       router.push('/dashboard/overview');
       }
 
     } catch(e) {
@@ -59,7 +59,15 @@ const LoginPage:NextPage = () => {
 
   return (
     <div className="container mx-auto text-gray-800 px-4">
-      <AuthenticationForm authInProgress={ authInProgress } authSuccess={ authSuccess } onSubmit={handleSubmitLogin} preFillEmail={ email as string }{...extraProps}>Sign in</AuthenticationForm>
+      <AuthenticationForm 
+      authInProgress={ authInProgress }
+      authSuccess={ authSuccess }
+      onSubmit={handleSubmitLogin}
+      preFillEmail={ email as string }
+      {...extraProps}
+      >
+        Sign in
+      </AuthenticationForm>
     </div>
   );
 }

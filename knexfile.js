@@ -1,4 +1,9 @@
 const { resolve } = require('path');
+
+// use process.env in seeds
+const dotenv = require('dotenv');
+dotenv.config({ path: './.env.local'});
+
 // Update with your config settings.
 
 /**

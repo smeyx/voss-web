@@ -8,7 +8,7 @@ exports.up = function(knex) {
     .createTable('users', table => {
       table.increments('id').unsigned();
       table.string('email').notNullable().unique();
-      table.text('password');
+      table.text('password').notNullable();
       table.string('name').nullable();
       table.string('street').nullable();
       table.string('city').nullable();
@@ -20,7 +20,7 @@ exports.up = function(knex) {
     });
 };
 
-/**
+/**mia_gers
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */

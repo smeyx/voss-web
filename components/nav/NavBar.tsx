@@ -33,7 +33,12 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
     <>
       <nav className="hidden sm:flex bg-inherit top-0 sm:flex-row items-center justify-between pt-4 px-4 mx-auto">
         <Link href="/" className="text-primary-500 dark:text-secondary-500" aria-label="Back to Home" >
-          <Logo height="30" style={{ color: 'inherit' }} alt="Logo showing a Fox and the text VOSS" role="graphics-document" />
+          <Logo height="30" 
+          style={{ color: 'inherit' }} 
+          alt="Logo showing a Fox and the text VOSS" 
+          aria-label="Logo showing a Fox and the text VOSS" 
+          role="img" 
+          />
         </Link>
         <div className="text-gray-800 flex items-center gap-4">
           { isLoggedIn &&
@@ -49,6 +54,7 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
             {authButton}
         </div>
       </nav>
+      { /* 
       <nav className="sm:hidden absolute z-10 text-white dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-800 top-0 left-0 right-0 bottom-0 flex justify-center">
         <div className="flex flex-col mt-10 container mx-10">
           { isLoggedIn &&
@@ -68,6 +74,7 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, mutate }): JSX.Element => {
           </div>
         </div>
       </nav>
+        */ }
     </>
   );
 };

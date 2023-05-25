@@ -72,7 +72,7 @@ export default function AuthenticationForm({ onSubmit, authInProgress, authSucce
           </button>
         </div>
         {errorResponse &&
-          <ErrorMessage errorMessage={errorResponse} />
+          <ErrorMessage>{ errorResponse }</ErrorMessage>
         }
         <div className="flex justify-center">
           <Button 

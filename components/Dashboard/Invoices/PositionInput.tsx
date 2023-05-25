@@ -62,8 +62,10 @@ const PositionInput: React.FC<PositionInputProps> = ({ currency = '€' }): JSX.
           type="button"
           onClick={ () => removePosition() }
           className="block py-0 px-0 flex-initial mr-4 h-10 w-full mb-4"
+          title="Remove position"
         >
-          <TrashSimple weight="regular" size="20"/>
+          <TrashSimple focusable="false" weight="regular" size="20" className="hidden lg:block"/>
+          <span className="lg:hidden lg:mx-4">Remove position</span>
         </Button>
       </div>
     </div>

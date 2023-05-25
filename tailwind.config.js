@@ -37,6 +37,7 @@ module.exports = {
       'gray': colors.gray,
       'white': colors.white,
       'zinc': colors.zinc,
+      'yellow': colors.yellow,
       'red': colors.red,
       'neutral': colors.neutral,
       'dark': '#141414',

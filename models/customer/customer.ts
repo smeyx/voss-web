@@ -12,7 +12,7 @@ export class CustomerModel {
     const [customers, count] = await Promise.all([
       knex('customers')
       .leftJoin('addresses', 'customers.id', '=', 'addresses.customer_id')
-      .modify(findById, id)
+      .modify(findById, 'customers.id', id)
       .modify(pagination, offset, limit)
       .select(
         'customers.id',
@@ -51,12 +51,13 @@ export class CustomerModel {
   }
 
   async addCustomer(customer: Customer, user_id: number) {
+    const now = new Date();
     const [ res ] = await knex('customers')
       .insert({ 
         name: customer.name,
         email: customer.email,
-        time_created: new Date(),
-        time_updated: new Date(),
+        time_created: now,
+        time_updated: now,
         user_id,
       })
       .returning('id');

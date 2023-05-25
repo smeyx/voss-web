@@ -1,18 +1,24 @@
 export type Invoice = {
+  id: number,
+  numberRangeId: number,
+  scheduleOptionId: number,
+  invoiceDate: Date,
   name: string,
-  title?: string,
-  date: Date,
+  title: string,
+  subtext: string,
   positions: Position[],
+  no_vat_clause: boolean,
+  user_id: number,
 }
 
 export type Position = {
+  id?: number,
   name: string,
   price: string,
   amount: number,
 }
 
 export type DbPosition = {
-  id: number,
   name: string,
   price: string,
   amount: number,

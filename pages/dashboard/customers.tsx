@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import Dashboard from '@components/Dashboard/';
@@ -6,9 +6,10 @@ import NewCustomerForm from '@components/Dashboard/Customers/NewCustomerForm';
 import CustomerList from '@components/Dashboard/Customers/CustomerList';
 import Pagination from '@components/Pagination';
 import Button from '@components/Button';
+import LoadingAnimation from '@components/LoadingAnimation';
 import fetchJSON from '@lib/fetchJSON';
 import useSwr from 'swr';
-import { Plus, Minus, Spinner } from 'phosphor-react';
+import { Plus, Minus } from 'phosphor-react';
 import type { Customer } from '@models/customer';
 import type { User } from '@models/user'
 import type { NextPage, GetServerSideProps } from 'next/types';
@@ -31,6 +32,9 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   const [ currentPage, setCurrentPage] = useState<number>(1);
   const [ pageSize, setPageSize] = useState<number>(10);
   const [ createCustomer, setCreateCustomer ] = useState<boolean>(false);
+  const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
+  const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
+
   const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
 
   async function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
@@ -44,41 +48,40 @@ const Customers: NextPage<PageProps> = ({ user }) => {
       const city = event.currentTarget.customer_address_city.value;
       const postalcode = event.currentTarget.customer_address_zipcode.value;
 
+      setRequestLoading(true);
       const response: { success: boolean } = await fetchJSON('/api/customer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, address: { street, housenumber, city, postalcode }, user_id: user.id,}),
       });
+      
+      setRequestLoading(false);
 
       if(response.success) {
         mutateCustomers();
+        // setRequestSuccessful(true);
         setCreateCustomer(false);
       }
     } catch(error) {
+      setRequestSuccessful(false);
       console.log(error);
     }
   }
   
-  
-  const Loading = (
-    <div className="flex items-center justify-center mt-10">
-      <Spinner size={20} className="animate-spin-slow" />
-    </div>
-  );
-
   return (
-    <Dashboard user={ user } activeTab={ 'customers' }>
+    <Dashboard title="Customers" user={ user } activeTab={ 'customers' }>
       <>
-        <aside>
+        <section>
           <Button 
             onClick={ () => setCreateCustomer(!createCustomer) } 
-            className="flex items-center px-4 py-2 text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">
+            title="Create a new customer"
+            >
             { !createCustomer ? <Plus size="16" className="mr-1" /> : <Minus size="16" className="mr-1" /> }
             Create customer
           </Button>
-        </aside>
+        </section>
         { /*TODO: make it beautiful and extract it*/ }
-          { !response && Loading}
+          { !response && <LoadingAnimation className="mt-10"/>}
           { !createCustomer && response && response.success === true && (
           <>
             <CustomerList customerList={response.data.customers}>
@@ -90,6 +93,8 @@ const Customers: NextPage<PageProps> = ({ user }) => {
 
         { createCustomer && 
           <NewCustomerForm
+            requestLoading={ requestLoading }
+            requestSuccessful={ requestSuccessful }
             key={+createCustomer}
             submitCustomerForm={submitCustomerForm}
             clearCustomerForm={() => setCreateCustomer(!createCustomer)} />

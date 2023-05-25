@@ -3,10 +3,17 @@ import { useState } from 'react';
 import type { ReactElement } from 'react';
 
 interface newCustomerFormProps {
+  requestLoading: boolean,
+  requestSuccessful: boolean,
   submitCustomerForm: (event: React.FormEvent<HTMLFormElement>) => void,
   clearCustomerForm: () => void
 }
-const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, clearCustomerForm}): ReactElement => {
+const NewCustomerForm: React.FC<newCustomerFormProps> = ({
+  requestLoading,
+  requestSuccessful,
+  submitCustomerForm,
+  clearCustomerForm,
+}): ReactElement => {
   const [ customerEmail, setCustomerEmail ] = useState<string>('');
   const [ customerName, setCustomerName ] = useState<string>('');
   const [ customerStreet, setCustomerStreet ] = useState<string>('');
@@ -86,10 +93,12 @@ const NewCustomerForm: React.FC<newCustomerFormProps> = ({ submitCustomerForm, c
           <Button 
             type="button" 
             onClick={ () => clearCustomerForm() }
-            className="inline-flex items-center px-4 py-2 mr-4 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Cancel</Button>
+            title="Cancel creation"
+            className="inline-flex mr-4">Cancel</Button>
           <Button 
             type="submit" 
-            className="inline-flex items-center px-4 py-2 font-bold text-white dark:text-neutral-800 bg-primary-500 dark:bg-secondary-500 hover:bg-primary-600 dark:hover:bg-secondary-600 rounded-md transition-colors">Save</Button>
+            title="Submit form"
+            className="inline-flex font-bold">Submit</Button>
         </div>
       </form>
     </div>

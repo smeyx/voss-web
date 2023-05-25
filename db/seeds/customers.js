@@ -8,6 +8,7 @@ exports.seed = async function(knex) {
   await knex('customers').insert([
     {
       id: 1, 
+      user_id: 1, 
       name: 'Herbert Müller',
       email: 'herbertmueller@asd.xyz',
       time_created: new Date(),
@@ -15,6 +16,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 2, 
+      user_id: 1, 
       name: 'Simon Friedrichs',
       email: 'simonf@friedrichs.me',
       time_created: new Date(),
@@ -22,6 +24,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 3, 
+      user_id: 1, 
       name: 'Harald Ritter',
       email: 'haraldritter@nospam.com',
       time_created: new Date(),
@@ -29,6 +32,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 4, 
+      user_id: 1, 
       name: 'Thomas Tiefland',
       email: 'tt@somewhere.xyz',
       time_created: new Date(),
@@ -36,6 +40,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 5, 
+      user_id: 1, 
       name: 'Fridtjof Rasmussen',
       email: 'fr@business.xt',
       time_created: new Date(),
@@ -43,6 +48,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 6, 
+      user_id: 1, 
       name: 'Lisa Bauer',
       email: 'bauer@times.org',
       time_created: new Date(),
@@ -50,6 +56,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 7, 
+      user_id: 1, 
       name: 'Fantasia Rohloff',
       email: 'frohloff@nothing.at',
       time_created: new Date(),
@@ -61,7 +68,8 @@ exports.seed = async function(knex) {
   for(let i = 8; i < 100; i++) {
     customers.push(
       {
-        id: i, 
+        id: i,
+        user_id: 1,
         name: 'Fantasia Rohloff',
         email: 'frohloff@nothing.at',
         time_created: new Date(),
