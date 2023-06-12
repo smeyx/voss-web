@@ -1,5 +1,6 @@
 export type Invoice = {
-  id: number,
+  id?: number,
+  customerId: number,
   numberRangeId: number,
   scheduleOptionId: number,
   invoiceDate: Date,
@@ -7,8 +8,8 @@ export type Invoice = {
   title: string,
   subtext: string,
   positions: Position[],
-  no_vat_clause: boolean,
-  user_id: number,
+  noVATClause: boolean,
+  userId: number,
 }
 
 export type Position = {

@@ -23,7 +23,8 @@ export class CustomerModel {
         'addresses.city',
         'addresses.postalcode'
       )
-      .where('customers.user_id', user_id),
+      .where('customers.user_id', user_id)
+      .orderBy('customers.time_created', 'desc'),
       knex('customers').count<Record<string, number>>('id').where('user_id', user_id),
     ]);
 

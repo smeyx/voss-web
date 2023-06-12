@@ -15,13 +15,13 @@ module.exports = {
     useNullAsDefault: true,
     client: 'sqlite3',
     connection: {
-      filename: './db/dev.sqlite3'
+      filename: './db/dev.sqlite3',
     },
     migrations: {
-      directory: resolve(__dirname, 'db/migrations'),
+      directory: './db/migrations',
     },
     seeds: {
-      directory: resolve(__dirname, 'db/seeds'),
+      directory: './db/seeds',
     }
   },
 

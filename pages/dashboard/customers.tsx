@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import Dashboard from '@components/Dashboard/';
 import NewCustomerForm from '@components/Dashboard/Customers/NewCustomerForm';
-import CustomerList from '@components/Dashboard/Customers/CustomerList';
 import Pagination from '@components/Pagination';
 import Button from '@components/Button';
 import LoadingAnimation from '@components/LoadingAnimation';
@@ -13,6 +12,7 @@ import { Plus, Minus } from 'phosphor-react';
 import type { Customer } from '@models/customer';
 import type { User } from '@models/user'
 import type { NextPage, GetServerSideProps } from 'next/types';
+import GenericList from '@components/GenericList';
 
 interface PageProps {
   user: User,
@@ -35,7 +35,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
   const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
 
-  const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customer?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
+  const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customers?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
 
   async function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,7 +49,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
       const postalcode = event.currentTarget.customer_address_zipcode.value;
 
       setRequestLoading(true);
-      const response: { success: boolean } = await fetchJSON('/api/customer', {
+      const response: { success: boolean } = await fetchJSON('/api/customers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, address: { street, housenumber, city, postalcode }, user_id: user.id,}),
@@ -84,9 +84,29 @@ const Customers: NextPage<PageProps> = ({ user }) => {
           { !response && <LoadingAnimation className="mt-10"/>}
           { !createCustomer && response && response.success === true && (
           <>
-            <CustomerList customerList={response.data.customers}>
+            <GenericList
+              items={response.data.customers}
+              renderItem={
+                (c) => (
+                  <li key={c.id} className="p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
+                    <div className="grid grid-cols-2 lg:grid-cols-5">
+                      <div className="col-span-1 lg:col-span-2">
+                        {c.name}
+                      </div>
+                      <div className="col-span-1 lg:col-span-3">
+                        <div className="flex flex-col lg:grid lg:grid-cols-8 gap-2 break-all">
+                          <span className="w-3/8 lg:col-span-4">{c.address.street} {c.address.housenumber}</span>
+                          <span className="w-2/8 lg:col-span-2">{c.address.postalcode}</span>
+                          <span className="w-3/8 lg:col-span-2">{c.address.city}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                )
+              }
+            >
               <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
-            </CustomerList>
+            </GenericList>
           </>
           )}
         

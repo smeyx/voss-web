@@ -10,7 +10,7 @@ import type { KeyedMutator } from 'swr';
 export default function useUser(redirectURL: string = '', redirectIfLoggedIn: boolean = false): { user: User | undefined, mutateUser: KeyedMutator<User> } {
   const fetcher = (url: string) => fetch(url).then(r => r.json())
 
-  const { data: user, mutate: mutateUser, error } = useSWR<User>('/api/user', fetcher);
+  const { data: user, mutate: mutateUser, error } = useSWR<User>('/api/users', fetcher);
   if(error) console.log(error);
 
   useEffect(() => {

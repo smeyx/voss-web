@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import type { ReactElement } from 'react';
 
-type CustomerListProps<Item> = {
+type GenericListProps<Item> = {
   items: Item[],
   renderItem: (item: Item) => JSX.Element
   children?: ReactElement
 }
 
 // generic so that renderItem extracts type
-const CustomerList = <T extends {}>({ items = [], renderItem, children }: CustomerListProps<T>): ReactElement => {
+const GenericList = <T extends {}>({ items = [], renderItem, children }: GenericListProps<T>): ReactElement => {
   const listItems = useMemo( 
     () => {
       if(!Array.isArray(items)) {
@@ -36,4 +36,4 @@ const CustomerList = <T extends {}>({ items = [], renderItem, children }: Custom
   );
 };
 
-export default CustomerList;
+export default GenericList;

@@ -12,7 +12,7 @@ const Overview: NextPage<PageProps> = ({ user }) => {
 
   return (
     <Dashboard title="Overview" user={ user } activeTab={ 'overview' }>
-      <span>{ 'this is a overview' }</span>
+    <></>
     </Dashboard>
   );
 }
