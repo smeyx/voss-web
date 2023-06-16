@@ -1,11 +1,11 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionParameters } from "@lib/session";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { NumberRange, NumberModel, NumberRangeDb } from "@models/settings";
+import { NumberRange, NumberModel } from "@models/settings";
 
 export interface NumberRangeApiResponse {
   success: boolean,
-  data: NumberRangeDb[],
+  data: NumberRange[],
 }
 
 async function numberRangesRoute(req: NextApiRequest, res: NextApiResponse) {
@@ -46,7 +46,7 @@ async function numberRangesRoute(req: NextApiRequest, res: NextApiResponse) {
     case 'PATCH': {
       try {
         let { id, name, prefix, current_number, number_length, filler, user_id } = req.body;
-        const numberRange: NumberRangeDb = {
+        const numberRange: NumberRange = {
           id,
           name,
           prefix,

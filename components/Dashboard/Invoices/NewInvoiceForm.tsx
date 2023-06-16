@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import PositionInput from '@components/Dashboard/Invoices/PositionInput';
 import ErrorMessage from '@components/ErrorMessage';
-import type { NumberRange, NumberRangeDb } from '@models/settings';
+import type { NumberRange } from '@models/settings';
 import type { Customer } from '@models/customer';
 
 interface newInvoiceFormProps {

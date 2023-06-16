@@ -1,10 +1,10 @@
 import knex from '@lib/db';
 import { findById } from '@models/helpers';
-import type { NumberRange, NumberRangeDb } from '.'
+import type { NumberRange } from '.'
 
 export default class NumberModel {
-  async find(user_id: number, id?: number): Promise<Partial<NumberRangeDb>> {
-    const numberRange: Partial<NumberRangeDb> = await knex('number_ranges')
+  async find(user_id: number, id?: number): Promise<Partial<NumberRange>> {
+    const numberRange: Partial<NumberRange> = await knex('number_ranges')
       .select('id', 'name', 'prefix', 'filler', 'number_length', 'current_number')
       .modify(findById, 'id', id)
       .where('user_id', user_id);
@@ -41,9 +41,9 @@ export default class NumberModel {
     }
   }
 
-  async update(numberRange: NumberRangeDb) {
+  async update(numberRange: NumberRange) {
     const now = new Date();
-    const [res]: NumberRangeDb[] = await knex('number_ranges')
+    const [res]: NumberRange[] = await knex('number_ranges')
       .update({
         id: numberRange.id,
         name: numberRange.name,
