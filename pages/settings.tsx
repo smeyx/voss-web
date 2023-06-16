@@ -4,7 +4,7 @@ import Button from '@components/Button';
 import useSWR from 'swr';
 import { protectedSsrPage } from '@lib/session';
 import fetchJSON from '@lib/fetchJSON';
-import type { NumberRangeApiResponse } from '@api/settings/';
+import type { NumberRangeApiResponse } from '@api/settings/numbers';
 import type { User } from '@models/user';
 import type { NumberRangeDb } from '@models/settings';
 import LoadingAnimation from '@components/LoadingAnimation';

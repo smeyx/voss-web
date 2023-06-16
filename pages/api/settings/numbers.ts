@@ -3,7 +3,7 @@ import { sessionParameters } from "@lib/session";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NumberRange, NumberModel, NumberRangeDb } from "@models/settings";
 
-export type NumberRangeApiResponse = {
+export interface NumberRangeApiResponse {
   success: boolean,
   data: NumberRangeDb[],
 }

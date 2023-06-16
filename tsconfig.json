@@ -35,7 +35,7 @@
       "@images/*": [
         "public/images/*"
       ],
-      "@/*": [
+      "@api/*": [
         "/pages/api/*"
       ]
     },
