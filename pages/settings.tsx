@@ -6,7 +6,7 @@ import { protectedSsrPage } from '@lib/session';
 import fetchJSON from '@lib/fetchJSON';
 import type { NumberRangeApiResponse } from '@api/settings/numbers';
 import type { User } from '@models/user';
-import type { NumberRangeDb } from '@models/settings';
+import type { NumberRange } from '@models/settings';
 import LoadingAnimation from '@components/LoadingAnimation';
 
 //TODO: display success messages
@@ -25,7 +25,7 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
   const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
   const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
   
-  const { data: numberRanges, mutate: mutateNumberFormat } = useSWR<NumberRangeApiResponse>(`/api/settings/numbers?user_id=${ user.id }`, fetchJSON)
+  const { data: numberRanges, mutate: mutateNumberFormat } = useSWR(`/api/settings/numbers?user_id=${ user.id }`, fetchJSON<NumberRangeApiResponse>)
   
   const resetForm = () => {
     setName('');
@@ -42,12 +42,16 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
     if (selectedId == 0) {
         resetForm();
     } else {
-      let { name, prefix, current_number, number_length, filler } = numberRanges.data.find((n: NumberRangeDb) => n.id == selectedId);
-      setName(name);
-      setPrefix(prefix);
-      setCurrentNumber(current_number);
-      setNumberLength(number_length);
-      setFiller(filler);
+      if (numberRanges && numberRanges.data) {
+        let range = numberRanges.data.find((n: NumberRange) => n.id == selectedId);
+        if (range) {
+          setName(range.name);
+          setPrefix(range.prefix);
+          setCurrentNumber(range.currentNumber);
+          setNumberLength(range.numberLength);
+          setFiller(range.filler);
+        }
+      }
     }
   }
   
@@ -107,7 +111,7 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
                   <option value="0" selected>New number range</option>
                   {
                     (numberRanges?.data && numberRanges?.data.length > 0) &&
-                    numberRanges.data.map((n: NumberRangeDb, i: number) => (
+                    numberRanges.data.map((n: NumberRange, i: number) => (
                       <option key={i} value={n.id}>
                         {n.name}
                       </option>)

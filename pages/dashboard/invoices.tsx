@@ -72,16 +72,18 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
           if (index && field) {
             let numIndex: number = parseInt(index);
             if (!positions[numIndex]) {
-               positions[numIndex] = {
+              positions[numIndex] = {
                 name: '',
                 price: '',
                 amount: 0,
               } as Position;
             }
 
+            // @ts-ignore
+            positions[index][field] = v;
+
           }
 
-          positions[index][field] = v;
         }
         
         deleteEntries.push(k);

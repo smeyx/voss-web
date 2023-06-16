@@ -36,7 +36,7 @@
         "public/images/*"
       ],
       "@api/*": [
-        "/pages/api/*"
+        "pages/api/*"
       ]
     },
     "plugins": [

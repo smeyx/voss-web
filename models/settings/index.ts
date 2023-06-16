@@ -1,5 +1,5 @@
 import NumberModel from './numbers';
-import type { NumberRange, NumberRangeDb } from './numbers'
+import type { NumberRange } from './numbers'
 
 export { NumberModel };
-export type { NumberRange, NumberRangeDb };
+export type { NumberRange };

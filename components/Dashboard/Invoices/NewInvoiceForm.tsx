@@ -64,7 +64,7 @@ const NewInvoiceForm: React.FC<newInvoiceFormProps> = ({
                       required
                       // onChange={ (e: React.ChangeEvent<HTMLSelectElement>) => setInvoiceCustomerId(e.target.value)}
                       className="w-full h-10 px-4 py-2 mb-4 bg-neutral-200 focus:border focus:border-primary-500 dark:bg-neutral-600 rounded-md dark:focus:border dark:focus:border-secondary-500 dark:border dark:border-neutral-900">
-                      {numberRanges && numberRanges.map((n: NumberRangeDb) => (<option value={n.id} key={n.id}>{n.name}</option>))}
+                      {numberRanges && numberRanges.map((n: NumberRange) => (<option value={n.id} key={n.id}>{n.name}</option>))}
                     </select>
                   </div>
                   <div className="col-span-full sm:col-span-3">
