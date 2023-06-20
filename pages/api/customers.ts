@@ -2,8 +2,14 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
 import { CustomerModel } from '@models/customer';
 import type { Customer } from '@models/customer';
-import type { User } from '@models/user';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
+import type { SWRResponse } from 'swr';
+
+export interface CustomerApiResponse extends SWRResponse {
+  success: boolean,
+  count: number,
+  customers: Customer[],
+}
 
 async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
   const model = new CustomerModel();

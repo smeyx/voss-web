@@ -1,31 +1,20 @@
 import { useState, useMemo } from 'react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionParameters } from '@lib/session';
+import useCustomers from '@lib/useCustomers';
 import Dashboard from '@components/Dashboard/';
 import NewCustomerForm from '@components/Dashboard/Customers/NewCustomerForm';
 import Pagination from '@components/Pagination';
 import Button from '@components/Button';
 import LoadingAnimation from '@components/LoadingAnimation';
 import fetchJSON from '@lib/fetchJSON';
-import useSwr from 'swr';
 import { Plus, Minus } from 'phosphor-react';
-import type { Customer } from '@models/customer';
 import type { User } from '@models/user'
 import type { NextPage, GetServerSideProps } from 'next/types';
 import GenericList from '@components/GenericList';
 
 interface PageProps {
   user: User,
-}
-
-interface CustomerApiResponse {
-  success: boolean,
-  data: CustomerResponse,
-}
-
-interface CustomerResponse {
-  count: number,
-  customers: Customer[]
 }
 
 const Customers: NextPage<PageProps> = ({ user }) => {
@@ -35,8 +24,12 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
   const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
 
-  const { data: response, mutate: mutateCustomers } = useSwr<CustomerApiResponse>(`/api/customers?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`, fetchJSON);
-
+  const { 
+    response,
+    mutateCustomers,
+    isLoading,
+  } = useCustomers(user.id);
+  
   async function submitCustomerForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -80,12 +73,10 @@ const Customers: NextPage<PageProps> = ({ user }) => {
             Create customer
           </Button>
         </section>
-        { /*TODO: make it beautiful and extract it*/ }
           { !response && <LoadingAnimation className="mt-10"/>}
-          { !createCustomer && response && response.success === true && (
-          <>
+          { !createCustomer && response && (
             <GenericList
-              items={response.data.customers}
+              items={response.customers}
               renderItem={
                 (c) => (
                   <li key={c.id} className="p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
@@ -105,9 +96,8 @@ const Customers: NextPage<PageProps> = ({ user }) => {
                 )
               }
             >
-              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={response.data.count} />
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={ response.count } />
             </GenericList>
-          </>
           )}
         
 

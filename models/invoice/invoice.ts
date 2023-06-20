@@ -56,7 +56,6 @@ export class InvoiceModel {
   }
 
   async create(invoice: Invoice, userId: number) {
-    console.log(invoice);
     const now = new Date();
     const [ res ] = await knex('invoices')
       .insert({ 

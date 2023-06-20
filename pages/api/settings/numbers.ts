@@ -5,7 +5,7 @@ import { NumberRange, NumberModel } from "@models/settings";
 
 export interface NumberRangeApiResponse {
   success: boolean,
-  data: NumberRange[],
+  numbers: NumberRange[],
 }
 
 async function numberRangesRoute(req: NextApiRequest, res: NextApiResponse) {

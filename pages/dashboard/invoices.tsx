@@ -1,36 +1,27 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import useSwr, { SWRResponse } from 'swr';
 import Dashboard from '@components/Dashboard/';
 import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
+import { formToInvoice } from '@lib/invoice/';
 import { protectedSsrPage } from '@lib/session'
 import { Plus, Minus } from 'phosphor-react';
-import ErrorMessage from '@components/ErrorMessage';
 import { Position } from '@models/invoice/invoice.types';
 import NewInvoiceForm from '@components/Dashboard/Invoices/NewInvoiceForm';
+import LoadingAnimation from '@components/LoadingAnimation';
+import Pagination from '@components/Pagination';
+import GenericList from '@components/GenericList';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import type { User } from '@models/user/';
 import type { Customer } from '@models/customer/';
 import type { NumberRangeApiResponse } from '@pages/api/settings/numbers';
 import type { InvoiceApiResponse } from '@pages/api/invoices';
-import LoadingAnimation from '@components/LoadingAnimation';
-import CustomerList from '@components/Dashboard/Customers/CustomerList';
-import Pagination from '@components/Pagination';
-import GenericList from '@components/GenericList';
+import type { CustomerApiResponse } from '@pages/api/customers';
 
 interface PageProps {
   user: User,
 }
 
-interface CustomerApiResponse extends SWRResponse {
-  success: boolean,
-  data: CustomerResponse,
-}
-
-interface CustomerResponse {
-  count: number,
-  customers: Customer[]
-}
 
 const Invoices: NextPage<PageProps> = ({ user }) => {
   const [ currentPage, setCurrentPage] = useState<number>(1);
@@ -43,7 +34,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     `/api/invoices?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`,
     fetchJSON<InvoiceApiResponse>
   )
-  const { data: customerData, isLoading: customersLoading } = useSwr(`/api/customers?user_id=${ user.id }`, fetchJSON<CustomerApiResponse>);
+  const { data: customerResponse, isLoading: customersLoading } = useSwr(`/api/customers?user_id=${ user.id }`, fetchJSON<CustomerApiResponse>);
   const { data: numberRanges } = useSwr(`/api/settings/numbers?user_id=${ user.id }`, fetchJSON<Partial<NumberRangeApiResponse>>)
   
 
@@ -134,19 +125,19 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         </section>
         {
           createInvoice && 
-          customerData?.data.customers && 
+          customerResponse?.customers && 
           numberRanges?.data ?
             <NewInvoiceForm
               submitInvoiceForm={handleSubmit}
               clearInvoiceForm={() => setCreateInvoice(false)}
-              customers={customerData.data.customers}
+              customers={customerResponse.customers}
               customersLoading={customersLoading}
-              customerCount={customerData.data.count}
+              customerCount={customerResponse.count}
               numberRanges={numberRanges.data}
             />
             : null
         }
-          { !customerData && <LoadingAnimation className="mt-10"/>}
+          { !customerResponse && <LoadingAnimation className="mt-10"/>}
           { !createInvoice && invoiceData && invoiceData.success === true && (
             <GenericList
               items={invoiceData.data.invoices}
@@ -157,7 +148,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                       { invoice.name }
                     </div>
                       {
-                        customerData?.data.customers.filter(c => c.id === invoice.customerId).map((c) => {
+                        customerResponse?.customers.filter(c => c.id === invoice.customerId).map((c) => {
                           if (c.id === invoice.customerId) {
                             return (
                               <div
