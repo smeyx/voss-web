@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import Button from '@components/Button';
 import type { ReactElement } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PositionInput from '@components/Dashboard/Invoices/PositionInput';
 import ErrorMessage from '@components/ErrorMessage';
 import type { NumberRange } from '@models/settings';
 import type { Customer } from '@models/customer';
+import { formToInvoice } from '@lib/invoice';
 
 interface newInvoiceFormProps {
   requestLoading?: boolean,
@@ -30,9 +31,19 @@ const NewInvoiceForm: React.FC<newInvoiceFormProps> = ({
   //TODO: seems odd
   const [ positions, setPositions ] = useState<Array<number>>([1]);
   const [ recurring, setRecurring ] = useState<boolean>(false);
+  
+  console.log(numberRanges);
 
   const addPosition = () => {
     setPositions([...positions, positions.length + 1]);
+  }
+  
+  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
+    let form = new FormData(e.currentTarget);
+    form = formToInvoice(form);
+    
+    console.log(numberRanges);
+
   }
   
   const removePosition = (index: number) => setPositions(positions.filter((v, i) => v !== index));
@@ -43,7 +54,8 @@ const NewInvoiceForm: React.FC<newInvoiceFormProps> = ({
           {
             (customers && customers.length > 0) ?
               <form className="flex flex-col flex-1 mt-4 gap-2"
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) => submitInvoiceForm(e)}>
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) => submitInvoiceForm(e)}
+                onChange={(e) => handleChange(e)}>
                 <div className="sm:grid sm:grid-cols-6 sm:gap-4 sm:gap-y-0">
                   <div className="col-span-full sm:col-span-3">
                     <label htmlFor="customer" className="block">Customer</label>

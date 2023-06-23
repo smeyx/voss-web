@@ -97,7 +97,7 @@ const Customers: NextPage<PageProps> = ({ user }) => {
                 )
               }
             >
-              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={ count } />
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={ count || 0 } />
             </GenericList>
           ) : null }
         

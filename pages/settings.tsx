@@ -8,6 +8,7 @@ import type { NumberRangeApiResponse } from '@api/settings/numbers';
 import type { User } from '@models/user';
 import type { NumberRange } from '@models/settings';
 import LoadingAnimation from '@components/LoadingAnimation';
+import useNumberRanges from '@lib/invoice/useNumberRanges';
 
 //TODO: display success messages
 
@@ -25,7 +26,10 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
   const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
   const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
   
-  const { data: numberRanges, mutate: mutateNumberFormat } = useSWR(`/api/settings/numbers?user_id=${ user.id }`, fetchJSON<NumberRangeApiResponse>)
+  const {
+    numberRanges,
+    mutateNumbers: mutateNumberRanges,
+  } = useNumberRanges(user.id);
   
   const resetForm = () => {
     setName('');
@@ -42,8 +46,8 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
     if (selectedId == 0) {
         resetForm();
     } else {
-      if (numberRanges && numberRanges.data) {
-        let range = numberRanges.data.find((n: NumberRange) => n.id == selectedId);
+      if (numberRanges) {
+        let range = numberRanges.find((n: NumberRange) => n.id == selectedId);
         if (range) {
           setName(range.name);
           setPrefix(range.prefix);
@@ -82,7 +86,7 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
 
       if(response && response.success) {
         // setRequestSuccessful(true);
-        mutateNumberFormat();
+        mutateNumberRanges();
         setSelectedRange(0);
         if(selectedRange == 0) {
           resetForm();
@@ -101,7 +105,7 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
         <section className="p-4 mt-5 border rounded-md border-neutral-200 bg-neutral-100 dark:bg-neutral-800 dark:border-neutral-900" >
           <h2 className="font-bold mb-5">Invoice Number range</h2>
           {
-            numberRanges?.data && numberRanges?.data.length > 0 ?
+            numberRanges && numberRanges.length > 0 ?
               <label>Number range
                 <select
                   name="current_number_range"
@@ -110,8 +114,8 @@ const Settings: NextPage<PageProps> = ({user}): JSX.Element => {
                 >
                   <option value="0" selected>New number range</option>
                   {
-                    (numberRanges?.data && numberRanges?.data.length > 0) &&
-                    numberRanges.data.map((n: NumberRange, i: number) => (
+                    (numberRanges && numberRanges.length > 0) &&
+                    numberRanges.map((n: NumberRange, i: number) => (
                       <option key={i} value={n.id}>
                         {n.name}
                       </option>)

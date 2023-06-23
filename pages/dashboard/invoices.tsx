@@ -10,12 +10,14 @@ import NewInvoiceForm from '@components/Dashboard/Invoices/NewInvoiceForm';
 import LoadingAnimation from '@components/LoadingAnimation';
 import Pagination from '@components/Pagination';
 import GenericList from '@components/GenericList';
+import useCustomers from '@lib/customers/useCustomers';
+import useNumberRanges from '@lib/invoice/useNumberRanges';
+import ErrorMessage from '@components/ErrorMessage';
+import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import type { User } from '@models/user/';
 import type { NumberRangeApiResponse } from '@pages/api/settings/numbers';
 import type { InvoiceApiResponse } from '@pages/api/invoices';
-import useCustomers from '@lib/customers/useCustomers';
-import useNumberRanges from '@lib/invoice/useNumberRanges';
 
 interface PageProps {
   user: User,
@@ -43,6 +45,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
   const {
     numberRanges,
   } = useNumberRanges(user.id);
+  
   console.log(numberRanges)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -75,6 +78,43 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
       console.log(e);
     }
   }
+  
+  const customerFormElement = (() => {
+    if (!customers?.length) {
+      return (
+        <ErrorMessage className="px-4 mt-5">
+          There are no customers. Please create a {' '}
+          <Link href='/dashboard/customers' title="Create customer in CRM">
+            customer
+          </Link>
+          {' '}
+          first.
+        </ErrorMessage>
+      )
+    } else if (!numberRanges?.length) {
+      return (
+        <ErrorMessage className="px-4 mt-5">
+          There are no number ranges. Please create a {' '}
+          <Link href='/settings' title="Create number range on settings page">
+            number range
+          </Link>
+          {' '}
+          first.
+        </ErrorMessage>
+      )
+    }
+
+    return (
+      <NewInvoiceForm
+        submitInvoiceForm={handleSubmit}
+        clearInvoiceForm={() => setCreateInvoice(false)}
+        customers={customers}
+        customersLoading={customersLoading}
+        customerCount={count || 0}
+        numberRanges={numberRanges}
+      />
+    )
+  })();
 
   return (
     <Dashboard title="Invoices" user={ user } activeTab={ 'invoices' }>
@@ -90,17 +130,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         </section>
         {
           createInvoice && 
-          customers && 
-          numberRanges ? 
-            <NewInvoiceForm
-              submitInvoiceForm={handleSubmit}
-              clearInvoiceForm={() => setCreateInvoice(false)}
-              customers={customers}
-              customersLoading={customersLoading}
-              customerCount={count || 0}
-              numberRanges={numberRanges}
-            />
-            : null
+          customerFormElement
         }
           { !invoiceData && <LoadingAnimation className="mt-10"/>}
           { !createInvoice && invoiceData?.success && customers && (
