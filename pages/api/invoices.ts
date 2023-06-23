@@ -1,18 +1,14 @@
 import { SWRResponse } from 'swr';
 import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
+import { sessionParameters } from '@lib/session/session';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { Invoice, Position } from '@models/invoice/invoice.types';
 import { InvoiceModel } from '@models/invoice/invoice';
 
 export interface InvoiceApiResponse extends SWRResponse {
   success: boolean,
-  data: InvoiceResponse,
-}
-
-export interface InvoiceResponse {
+  invoices: Invoice[],
   count: number,
-  invoices: Invoice[]
 }
 
 async function invoiceRoute(req: NextApiRequest, res: NextApiResponse) {
@@ -34,7 +30,11 @@ async function invoiceRoute(req: NextApiRequest, res: NextApiResponse) {
             invoiceData = await invoices.find(user_id);
           }
 
-          res.status(200).json({ success: true, data: invoiceData })
+          res.status(200).json({
+            success: true,
+            invoices: invoiceData.invoices,
+            count: invoiceData.count
+          });
         } else {
           res.status(200).json({ success: false });
         }

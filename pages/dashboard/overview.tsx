@@ -1,6 +1,6 @@
 import type { NextPage, GetServerSideProps } from 'next/types';
 import { withIronSessionSsr } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
+import { sessionParameters } from '@lib/session/session';
 import Dashboard from '@components/Dashboard/';
 import type { User } from '@models/user/user.types';
 

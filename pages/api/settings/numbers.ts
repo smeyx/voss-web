@@ -1,7 +1,8 @@
 import { withIronSessionApiRoute } from "iron-session/next";
-import { sessionParameters } from "@lib/session";
+import { sessionParameters } from "@lib/session/session";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NumberRange, NumberModel } from "@models/settings";
+import { SWRResponse } from "swr";
 
 export interface NumberRangeApiResponse {
   success: boolean,
@@ -15,7 +16,7 @@ async function numberRangesRoute(req: NextApiRequest, res: NextApiResponse) {
       let user_id: number = parseInt(req.query.user_id as string);
       if (user_id) {
         const numberRange = await model.find(user_id);
-        res.status(200).json({ success: true, data: numberRange });
+        res.status(200).json({ success: true, numbers: numberRange });
       } else {
         res.status(200).json({ success: false });
       }

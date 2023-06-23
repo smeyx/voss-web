@@ -4,19 +4,18 @@ import Dashboard from '@components/Dashboard/';
 import Button from '@components/Button';
 import fetchJSON from '@lib/fetchJSON';
 import { formToInvoice } from '@lib/invoice/';
-import { protectedSsrPage } from '@lib/session'
+import { protectedSsrPage } from '@lib/session/session'
 import { Plus, Minus } from 'phosphor-react';
-import { Position } from '@models/invoice/invoice.types';
 import NewInvoiceForm from '@components/Dashboard/Invoices/NewInvoiceForm';
 import LoadingAnimation from '@components/LoadingAnimation';
 import Pagination from '@components/Pagination';
 import GenericList from '@components/GenericList';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import type { User } from '@models/user/';
-import type { Customer } from '@models/customer/';
 import type { NumberRangeApiResponse } from '@pages/api/settings/numbers';
 import type { InvoiceApiResponse } from '@pages/api/invoices';
-import type { CustomerApiResponse } from '@pages/api/customers';
+import useCustomers from '@lib/customers/useCustomers';
+import useNumberRanges from '@lib/invoice/useNumberRanges';
 
 interface PageProps {
   user: User,
@@ -34,60 +33,26 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
     `/api/invoices?user_id=${ user.id }&page=${ currentPage }&size=${ pageSize }`,
     fetchJSON<InvoiceApiResponse>
   )
-  const { data: customerResponse, isLoading: customersLoading } = useSwr(`/api/customers?user_id=${ user.id }`, fetchJSON<CustomerApiResponse>);
-  const { data: numberRanges } = useSwr(`/api/settings/numbers?user_id=${ user.id }`, fetchJSON<Partial<NumberRangeApiResponse>>)
+
+  const {
+    customers,
+    count,
+    isLoading: customersLoading
+  } = useCustomers(user.id);
   
+  const {
+    numberRanges,
+  } = useNumberRanges(user.id);
+  console.log(numberRanges)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const form: HTMLFormElement = event.currentTarget;
-    const formData = new FormData(form);
+    let formData = new FormData(form);
     formData.append('user_id', user.id.toString());
-    
-    //TODO: loop throug formdata to validate inputs
-    const positions:Array<Position> = [];
-    const deleteEntries: Array<string> = [];
-    const entries = formData.entries();
-    let element = entries.next();
-    while(!element.done) {
-      const [k, v] = element.value;
-      //just to make it overly complicated
-      // move positions into their own object
-      if (k.includes('position')) {
-        const parts = k.split('_');
-        if (parts) {
-          let index = parts.pop();
-          const field = parts.pop();
-
-
-          if (index && field) {
-            let numIndex: number = parseInt(index);
-            if (!positions[numIndex]) {
-              positions[numIndex] = {
-                name: '',
-                price: '',
-                amount: 0,
-              } as Position;
-            }
-
-            // @ts-ignore
-            positions[index][field] = v;
-
-          }
-
-        }
-        
-        deleteEntries.push(k);
-      }
-      
-      element = entries.next();
-    }
-    
-    // delete unnecessary positions from formdata.
-    for(let i of deleteEntries) formData.delete(i);
-    formData.append('positions', JSON.stringify(positions));
 
     try {
+      formData = formToInvoice(formData);
       setRequestLoading(true);
       const response: { success: boolean } = await fetchJSON('/api/invoices', {
         method: 'POST',
@@ -125,22 +90,22 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
         </section>
         {
           createInvoice && 
-          customerResponse?.customers && 
-          numberRanges?.data ?
+          customers && 
+          numberRanges ? 
             <NewInvoiceForm
               submitInvoiceForm={handleSubmit}
               clearInvoiceForm={() => setCreateInvoice(false)}
-              customers={customerResponse.customers}
+              customers={customers}
               customersLoading={customersLoading}
-              customerCount={customerResponse.count}
-              numberRanges={numberRanges.data}
+              customerCount={count || 0}
+              numberRanges={numberRanges}
             />
             : null
         }
-          { !customerResponse && <LoadingAnimation className="mt-10"/>}
-          { !createInvoice && invoiceData && invoiceData.success === true && (
+          { !invoiceData && <LoadingAnimation className="mt-10"/>}
+          { !createInvoice && invoiceData?.success && customers && (
             <GenericList
-              items={invoiceData.data.invoices}
+              items={invoiceData.invoices}
               renderItem={(invoice) => (
                 <li key={invoice.id} className="p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
                   <div className="grid grid-cols-2 lg:grid-cols-5">
@@ -148,7 +113,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                       { invoice.name }
                     </div>
                       {
-                        customerResponse?.customers.filter(c => c.id === invoice.customerId).map((c) => {
+                        customers.filter(c => c.id === invoice.customerId).map((c) => {
                           if (c.id === invoice.customerId) {
                             return (
                               <div
@@ -165,7 +130,7 @@ const Invoices: NextPage<PageProps> = ({ user }) => {
                 </li>
               )}
             >
-              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={invoiceData.data.count} />
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={invoiceData.count} />
             </GenericList>
           )}
     </>

@@ -1,5 +1,4 @@
 import { formToInvoice } from "./formToInvoice";
-import { }
 
 export { formToInvoice }
 // import jsPDF from 'jspdf';

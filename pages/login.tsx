@@ -2,9 +2,9 @@ import fetchJSON from '@lib/fetchJSON';
 import AuthenticationForm from '@components/AuthenticationForm';
 import { useRouter } from 'next/router';
 import { withIronSessionSsr } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
+import { sessionParameters } from '@lib/session/session';
 import { useState } from 'react';
-import useUser from '@lib/useUser';
+import useUser from '@lib/session/useUser';
 import type { NextPage, GetServerSideProps } from 'next/types';
 import type { User } from '@models/user/user.types';
 

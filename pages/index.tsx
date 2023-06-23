@@ -1,7 +1,7 @@
 import type { NextPage, GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { withIronSessionSsr } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
+import { sessionParameters } from '@lib/session/session';
 
 interface PageProps {
   isLoggedIn: boolean;

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { GetServerSideProps, NextPage } from "next";
 import Button from '@components/Button';
 import useSWR from 'swr';
-import { protectedSsrPage } from '@lib/session';
+import { protectedSsrPage } from '@lib/session/session';
 import fetchJSON from '@lib/fetchJSON';
 import type { NumberRangeApiResponse } from '@api/settings/numbers';
 import type { User } from '@models/user';

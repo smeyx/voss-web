@@ -1,5 +1,5 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
+import { sessionParameters } from '@lib/session/session';
 import { CustomerModel } from '@models/customer';
 import type { Customer } from '@models/customer';
 import type { NextApiRequest, NextApiResponse } from 'next/types';
@@ -32,7 +32,7 @@ async function customerRoute(req: NextApiRequest, res: NextApiResponse) {
             customers = await model.find(user_id);
           }
 
-          res.status(200).json({ success: true, data: customers })
+          res.status(200).json({ success: true, customers: customers.customers, count: customers.count })
         } else {
           res.status(200).json({ success: false });
         }

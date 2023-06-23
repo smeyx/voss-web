@@ -1,5 +1,5 @@
 import NavBar from '@components/nav/NavBar';
-import useUser from '@lib/useUser';
+import useUser from '@lib/session/useUser';
 
 const Header: React.FC = (): JSX.Element => {
   const { user, mutateUser } = useUser();

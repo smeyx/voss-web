@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { withIronSessionSsr } from 'iron-session/next';
-import { sessionParameters } from '@lib/session';
-import useCustomers from '@lib/useCustomers';
+import { sessionParameters } from '@lib/session/session';
+import useCustomers from '@lib/customers/useCustomers';
 import Dashboard from '@components/Dashboard/';
 import NewCustomerForm from '@components/Dashboard/Customers/NewCustomerForm';
 import Pagination from '@components/Pagination';
@@ -25,7 +25,8 @@ const Customers: NextPage<PageProps> = ({ user }) => {
   const [ requestSuccessful, setRequestSuccessful ] = useState<boolean>(false);
 
   const { 
-    response,
+    customers,
+    count,
     mutateCustomers,
     isLoading,
   } = useCustomers(user.id);
@@ -73,10 +74,10 @@ const Customers: NextPage<PageProps> = ({ user }) => {
             Create customer
           </Button>
         </section>
-          { !response && <LoadingAnimation className="mt-10"/>}
-          { !createCustomer && response && (
+          { !customers && isLoading && <LoadingAnimation className="mt-10"/>}
+          { !createCustomer && customers ? (
             <GenericList
-              items={response.customers}
+              items={customers}
               renderItem={
                 (c) => (
                   <li key={c.id} className="p-2 mb-1 border bg-neutral-100 shadow-sm rounded-md border-neutral-200 dark:border dark:border-neutral-800 dark:bg-neutral-700">
@@ -96,9 +97,9 @@ const Customers: NextPage<PageProps> = ({ user }) => {
                 )
               }
             >
-              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={ response.count } />
+              <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} listLength={ count } />
             </GenericList>
-          )}
+          ) : null }
         
 
         { createCustomer && 
