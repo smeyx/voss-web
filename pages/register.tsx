@@ -32,6 +32,8 @@ const RegisterPage:NextPage = () => {
       if(success === false) {
         if(message) {
           setExtraProps({ errorResponse: message});
+          setAuthSuccess(false);
+          setAuthInProgress(false);
         }
       } else {
         setAuthSuccess(true);
@@ -44,7 +46,7 @@ const RegisterPage:NextPage = () => {
   };
 
   return (
-    <div className="container mx-auto text-gray-800 px-4">
+    <div className="container px-4 mx-auto text-gray-800">
       <AuthenticationForm
         authInProgress={authInProgress}
         authSuccess={authSuccess}
