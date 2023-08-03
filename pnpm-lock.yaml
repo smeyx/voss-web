@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   bcrypt:
     specifier: ^5.1.0
@@ -11,8 +15,8 @@ dependencies:
     specifier: ^6.3.1
     version: 6.3.1(next@13.0.0)
   knex:
-    specifier: ^2.3.0
-    version: 2.3.0(sqlite3@5.1.2)
+    specifier: ^2.4.0
+    version: 2.4.0(sqlite3@5.1.2)
   next:
     specifier: 13.0.0
     version: 13.0.0(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -3828,8 +3832,8 @@ packages:
       object.assign: 4.1.4
     dev: true
 
-  /knex@2.3.0(sqlite3@5.1.2):
-    resolution: {integrity: sha512-WMizPaq9wRMkfnwKXKXgBZeZFOSHGdtoSz5SaLAVNs3WRDfawt9O89T4XyH52PETxjV8/kRk0Yf+8WBEP/zbYw==}
+  /knex@2.4.0(sqlite3@5.1.2):
+    resolution: {integrity: sha512-i0GWwqYp1Hs2yvc2rlDO6nzzkLhwdyOZKRdsMTB8ZxOs2IXQyL5rBjSbS1krowCh6V65T4X9CJaKtuIfkaPGSA==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
