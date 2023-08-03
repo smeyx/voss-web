@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   bcrypt:
     specifier: ^5.1.0
@@ -12,7 +16,7 @@ dependencies:
     version: 6.3.1(next@13.0.0)
   knex:
     specifier: ^2.3.0
-    version: 2.3.0(sqlite3@5.1.2)
+    version: 2.3.0(sqlite3@5.1.5)
   next:
     specifier: 13.0.0
     version: 13.0.0(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -26,8 +30,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   sqlite3:
-    specifier: ^5.1.2
-    version: 5.1.2
+    specifier: ^5.1.5
+    version: 5.1.5
   swr:
     specifier: ^2.1.5
     version: 2.1.5(react@18.2.0)
@@ -1714,6 +1718,7 @@ packages:
   /@npmcli/move-file@1.1.2:
     resolution: {integrity: sha512-1SUf/Cg2GzGDyaf15aR9St9TWlb+XvbZXWpDx8YKs7MLzMH/BCeopv+y9vzrzgkfykCGuWOlSu3mZhj2+FQcrg==}
     engines: {node: '>=10'}
+    deprecated: This functionality has been moved to @npmcli/fs
     dependencies:
       mkdirp: 1.0.4
       rimraf: 3.0.2
@@ -3828,7 +3833,7 @@ packages:
       object.assign: 4.1.4
     dev: true
 
-  /knex@2.3.0(sqlite3@5.1.2):
+  /knex@2.3.0(sqlite3@5.1.5):
     resolution: {integrity: sha512-WMizPaq9wRMkfnwKXKXgBZeZFOSHGdtoSz5SaLAVNs3WRDfawt9O89T4XyH52PETxjV8/kRk0Yf+8WBEP/zbYw==}
     engines: {node: '>=12'}
     hasBin: true
@@ -3868,7 +3873,7 @@ packages:
       pg-connection-string: 2.5.0
       rechoir: 0.8.0
       resolve-from: 5.0.0
-      sqlite3: 5.1.2
+      sqlite3: 5.1.5
       tarn: 3.0.2
       tildify: 2.0.0
     transitivePeerDependencies:
@@ -4808,8 +4813,8 @@ packages:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
 
-  /sqlite3@5.1.2:
-    resolution: {integrity: sha512-D0Reg6pRWAFXFUnZKsszCI67tthFD8fGPewRddDCX6w4cYwz3MbvuwRICbL+YQjBAh9zbw+lJ/V9oC8nG5j6eg==}
+  /sqlite3@5.1.5:
+    resolution: {integrity: sha512-7sP16i4wI+yKnGOO2q2ijze7EjQ9US+Vw7DYYwxfFtqNZDGgBcEw0oeDaDvUTq66uJOzVd/z6MkIg+c9erSJKg==}
     requiresBuild: true
     peerDependenciesMeta:
       node-gyp:
